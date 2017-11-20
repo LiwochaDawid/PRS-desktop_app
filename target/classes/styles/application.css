@@ -1,0 +1,11 @@
+#rootLayout{
+    -fx-background-image: url("/images/rootImage.jpg") no-repeat center center fixed;
+    -fx-background-repeat: stretch;   
+    -fx-background-position: center center;
+    -fx-border-radius: 2;
+}
+#borderLayout{
+	-fx-border-radius:2.0px;
+    -fx-background-color: white;
+    
+}
