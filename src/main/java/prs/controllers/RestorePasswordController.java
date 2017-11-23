@@ -6,18 +6,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 
-public class RestorePasswordController {
+public class RestorePasswordController implements ILogin {
 	private MainController mainController;
+
 	public void setMainController(MainController mainController) {
-		this.mainController=mainController;
+		this.mainController = mainController;
 	}
-	
+
 	@FXML
 	void restorePassword() {
 		mainController.showLoginLayout();
 		System.out.println("Email with new pass sended");
-		
+
 	}
+
 	@FXML
 	void backToLogin() {
 		mainController.showLoginLayout();

@@ -11,9 +11,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
 public class MainController {
+	private ILogin mainInterface;
+
 	public void setMainScreen(Pane pane) {
 		MainBorderPane.setCenter(pane);
 	}
+
 	public void showLoginLayout() {
 		FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/LoginLayout.fxml"));
 		Pane pane = null;
@@ -22,8 +25,8 @@ public class MainController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		LoginController loginController = loader.getController();
-		loginController.setMainController(this);
+		mainInterface = loader.getController();
+		mainInterface.setMainController(this);
 		MainBorderPane.setCenter(pane);
 	}
 
