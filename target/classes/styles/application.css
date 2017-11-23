@@ -1,11 +1,18 @@
 #rootLayout{
-    -fx-background-image: url("/images/rootImage.jpg") no-repeat center center fixed;
+    -fx-background-image: url("/images/rootImage.jpg");
+    -fx-background-radius: 100 100 0 0;
     -fx-background-repeat: stretch;   
     -fx-background-position: center center;
-    -fx-border-radius: 2;
+    -fx-padding: 0 0 100px 0 ;
 }
-#borderLayout{
-	-fx-border-radius:2.0px;
-    -fx-background-color: white;
-    
+#internalLayout{
+	-fx-background-radius:20.0px;
+    -fx-background-color: white; 
+}
+#internalLayoutButton{
+	-fx-background-color: #0D80D9;
+	-fx-text-fill: white;
+	-fx-font-size: 14px;
+	-fx-font-weight: bold; 
+	
 }

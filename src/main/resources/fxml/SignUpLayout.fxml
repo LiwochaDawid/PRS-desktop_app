@@ -14,9 +14,9 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="prs.controllers.SignUpController">
    <children>
-      <VBox id="borderLayout" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="200.0" minWidth="100.0" prefHeight="600.0" prefWidth="300.0">
+      <VBox id="internalLayout" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="200.0" minWidth="100.0" prefHeight="600.0" prefWidth="300.0">
          <children>
-            <ImageView fitHeight="143.0" fitWidth="195.0" pickOnBounds="true">
+            <ImageView fitHeight="143.0" fitWidth="195.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/logofinalv2.png" />
                </image>
@@ -71,7 +71,7 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <Button mnemonicParsing="false" onAction="#signUp" prefHeight="36.0" prefWidth="200.0" text="Sign up" textAlignment="CENTER">
+            <Button id="internalLayoutButton" mnemonicParsing="false" onAction="#signUp" prefHeight="36.0" prefWidth="200.0" text="Sign up" textAlignment="CENTER">
                <VBox.margin>
                   <Insets top="5.0" />
                </VBox.margin>
