@@ -1,5 +1,6 @@
 #rootLayout{
     -fx-background-image: url("/images/rootImage.jpg");
+    -fx-background-size: cover, auto;
     -fx-background-radius: 100 100 0 0;
     -fx-background-repeat: stretch;   
     -fx-background-position: center center;

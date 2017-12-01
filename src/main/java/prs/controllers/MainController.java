@@ -16,7 +16,6 @@ public class MainController {
 	public void setMainScreen(Pane pane) {
 		MainBorderPane.setCenter(pane);
 	}
-
 	public void showLoginLayout() {
 		FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/LoginLayout.fxml"));
 		Pane pane = null;
@@ -29,7 +28,6 @@ public class MainController {
 		mainInterface.setMainController(this);
 		MainBorderPane.setCenter(pane);
 	}
-
 	@FXML
 	private BorderPane MainBorderPane;
 	@FXML
@@ -39,7 +37,6 @@ public class MainController {
 	public void initialize() {
 		showLoginLayout();
 	}
-
 	@FXML
 	public void btnCloseHoverOn(MouseEvent event) {
 		buttonClose.setImage(new Image("/images/closeBtnOn.png"));

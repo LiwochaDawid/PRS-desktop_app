@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="prs.controllers.LoginController">
+<Pane fx:id="loginPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="prs.controllers.LoginController">
    <children>
       <VBox id="internalLayout" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="200.0" minWidth="100.0" prefHeight="400.0" prefWidth="300.0" stylesheets="@../styles/application.css">
          <children>
@@ -20,13 +20,13 @@
                   <Image url="@../images/logofinalv2.png" />
                </image>
             </ImageView>
-            <TextField maxWidth="-Infinity" minWidth="200.0" prefHeight="36.0" prefWidth="200.0" promptText="Login">
+            <TextField fx:id="email" maxWidth="-Infinity" minWidth="200.0" onKeyReleased="#onChangeEmail" prefHeight="36.0" prefWidth="200.0" promptText="Email">
                <VBox.margin>
                   <Insets bottom="5.0" top="20.0" />
                </VBox.margin>
             </TextField>
-            <PasswordField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" promptText="Password" />
-            <Button id="internalLayoutButton" mnemonicParsing="false" onAction="#signIn" prefHeight="36.0" prefWidth="200.0" text="Sign in" textAlignment="CENTER">
+            <PasswordField fx:id="password" maxHeight="-Infinity" maxWidth="-Infinity" onKeyReleased="#onChangePassword" prefHeight="36.0" prefWidth="200.0" promptText="Password" />
+            <Button id="internalLayoutButton" fx:id="signinButton" disable="true" mnemonicParsing="false" onAction="#signIn" prefHeight="36.0" prefWidth="200.0" text="Sign in" textAlignment="CENTER">
                <VBox.margin>
                   <Insets top="5.0" />
                </VBox.margin>

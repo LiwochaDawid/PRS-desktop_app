@@ -24,4 +24,16 @@ public class RestorePasswordController implements ILogin {
 	void backToLogin() {
 		mainController.showLoginLayout();
 	}
+
+
+	public void sendDataToServer() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void getDataFromServer() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -12,53 +12,58 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="prs.controllers.SignUpController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="670.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="prs.controllers.SignUpController">
    <children>
-      <VBox id="internalLayout" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="200.0" minWidth="100.0" prefHeight="600.0" prefWidth="300.0">
+      <VBox id="internalLayout" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="200.0" minWidth="100.0" prefHeight="670.0" prefWidth="300.0">
          <children>
             <ImageView fitHeight="143.0" fitWidth="195.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/logofinalv2.png" />
                </image>
             </ImageView>
-            <TextField maxWidth="-Infinity" minWidth="200.0" prefHeight="36.0" prefWidth="200.0" promptText="Login">
+            <TextField fx:id="email" maxWidth="-Infinity" minWidth="200.0" onKeyReleased="#onChangeEmail" prefHeight="36.0" prefWidth="200.0" promptText="Email">
                <VBox.margin>
                   <Insets bottom="5.0" top="20.0" />
                </VBox.margin>
             </TextField>
-            <PasswordField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" promptText="Password">
+            <TextField fx:id="confirmEmail" maxWidth="-Infinity" minWidth="200.0" onKeyReleased="#onChangeConfirmEmail" prefHeight="36.0" prefWidth="200.0" promptText="Confirm email">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </TextField>
+            <PasswordField fx:id="password" maxHeight="-Infinity" maxWidth="-Infinity" onKeyTyped="#onChangePassword" prefHeight="36.0" prefWidth="200.0" promptText="Password">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin></PasswordField>
-            <PasswordField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" promptText="Confirm password">
+            <PasswordField fx:id="confirmPassword" maxHeight="-Infinity" maxWidth="-Infinity" onKeyReleased="#onChangeConfirmPassword" prefHeight="36.0" prefWidth="200.0" promptText="Confirm password">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin>
             </PasswordField>
-            <TextField maxWidth="-Infinity" minWidth="200.0" prefHeight="36.0" prefWidth="200.0" promptText="Name">
+            <TextField fx:id="name" maxWidth="-Infinity" minWidth="200.0" prefHeight="36.0" prefWidth="200.0" promptText="Name">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin>
             </TextField>
-            <TextField maxWidth="-Infinity" minWidth="200.0" prefHeight="36.0" prefWidth="200.0" promptText="Surname">
+            <TextField fx:id="surname" maxWidth="-Infinity" minWidth="200.0" prefHeight="36.0" prefWidth="200.0" promptText="Surname">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin>
             </TextField>
-            <TextField maxWidth="-Infinity" minWidth="200.0" prefHeight="36.0" prefWidth="200.0" promptText="Prefix" />
-            <TextField maxWidth="-Infinity" minWidth="200.0" prefHeight="36.0" prefWidth="200.0" promptText="Street">
+            <TextField fx:id="prefix" maxWidth="-Infinity" minWidth="200.0" prefHeight="36.0" prefWidth="200.0" promptText="Prefix" />
+            <TextField fx:id="street" maxWidth="-Infinity" minWidth="200.0" prefHeight="36.0" prefWidth="200.0" promptText="Street">
                <VBox.margin>
                   <Insets bottom="5.0" top="5.0" />
                </VBox.margin>
             </TextField>
             <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="36.0" prefWidth="200.0">
                <children>
-                  <TextField alignment="BOTTOM_LEFT" prefHeight="36.0" prefWidth="70.0" promptText="Post-code">
+                  <TextField fx:id="postCode" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="36.0" prefWidth="70.0" promptText="Post-code">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                   </TextField>
-                  <TextField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="36.0" prefWidth="125.0" promptText="City">
+                  <TextField fx:id="city" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="36.0" prefWidth="125.0" promptText="City">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -71,7 +76,17 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <Button id="internalLayoutButton" mnemonicParsing="false" onAction="#signUp" prefHeight="36.0" prefWidth="200.0" text="Sign up" textAlignment="CENTER">
+            <TextField fx:id="country" maxWidth="-Infinity" minWidth="200.0" prefHeight="36.0" prefWidth="200.0" promptText="Country">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="phoneNumber" maxWidth="-Infinity" minWidth="200.0" prefHeight="36.0" prefWidth="200.0" promptText="Phone Number">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </TextField>
+            <Button id="internalLayoutButton" mnemonicParsing="false" onAction="#signUpButton" prefHeight="36.0" prefWidth="200.0" text="Sign up" textAlignment="CENTER">
                <VBox.margin>
                   <Insets top="5.0" />
                </VBox.margin>
