@@ -24,6 +24,8 @@ import prs.main.Main;
 
 import com.google.gson.Gson;
 import com.sun.javafx.tk.Toolkit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -125,6 +127,16 @@ public class LoginController implements ILogin {
 
 	private void showLandingLayout() {
 		Stage stage=(Stage)loginPane.getScene().getWindow();
+                FXMLLoader stageLoader = new FXMLLoader(this.getClass().getResource("/fxml/MainLayout_1.fxml"));
+                BorderPane rootLayout=null;
+            try {
+                rootLayout = (BorderPane) stageLoader.load();
+            } catch (IOException ex) {
+                Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+                Scene scene = new Scene(rootLayout);
+                stage.setScene(scene);                
 		Screen screen = Screen.getPrimary();
 		Rectangle2D bounds = screen.getVisualBounds();
 		stage.setX(bounds.getMinX());
@@ -133,7 +145,8 @@ public class LoginController implements ILogin {
 		stage.setHeight(bounds.getHeight());
 		
 		FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/LandingLayout.fxml"));
-		Pane pane = null;
+		loginPane=null; //test for getting rid of old pane
+                Pane pane = null;
 		try {
 			pane = loader.load();
 		} catch (IOException e) {
@@ -142,6 +155,8 @@ public class LoginController implements ILogin {
 		pane.setMaxWidth(bounds.getWidth()/1.5);
 		loginInterface = loader.getController();
 		loginInterface.setMainController(mainController);
+                if (pane==null)
+                System.out.println("If pane is null");
 		mainController.setMainScreen(pane);
 		
 		

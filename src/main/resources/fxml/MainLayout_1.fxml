@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane id="rootLayout" fx:id="MainBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="700.0" stylesheets="@../styles/application.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="prs.controllers.MainController">
+   <top>
+      <AnchorPane prefHeight="48.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="buttonClose" fitHeight="30.0" fitWidth="30.0" layoutX="714.0" layoutY="9.0" onMouseClicked="#btnClose" onMouseEntered="#btnCloseHoverOn" onMouseExited="#btnCloseHoverOff" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@../images/closeBtnOff.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="104.0" layoutY="-51.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@../images/maximizebtn.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="114.0" layoutY="-41.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@../images/minimizebtn.png" />
+               </image>
+            </ImageView>
+            <MenuButton layoutX="501.0" layoutY="12.0" mnemonicParsing="false" text="test@test" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="0.0">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Settings" />
+                <MenuItem mnemonicParsing="false" text="Log out" />
+              </items>
+            </MenuButton>
+         </children>
+      </AnchorPane>
+   </top>
+   <left>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" text="Today's visits">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Button>
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" text="Schedules">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Button>
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" text="Patients">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Button>
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" text="Settings">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+   </left>
+</BorderPane>
