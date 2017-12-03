@@ -153,7 +153,7 @@ public class LoginController implements ILogin {
 			e.printStackTrace();
 		}
 		pane.setMaxWidth(bounds.getWidth()/1.5);
-		loginInterface = loader.getController();
+		loginInterface = stageLoader.getController();
 		loginInterface.setMainController(mainController);
                 if (pane==null)
                 System.out.println("If pane is null");

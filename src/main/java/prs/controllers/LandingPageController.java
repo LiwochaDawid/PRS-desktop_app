@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.MenuButton;
 
 public class LandingPageController implements ILogin{
+        private MainController mainController;
         @FXML
         private MenuButton accountButton;
 	@FXML
@@ -14,7 +15,7 @@ public class LandingPageController implements ILogin{
 
 	@Override
 	public void setMainController(MainController mainController) {
-		// TODO Auto-generated method stub
+		this.mainController = mainController;
 		
 	}
 
