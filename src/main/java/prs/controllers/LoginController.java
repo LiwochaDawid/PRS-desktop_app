@@ -109,7 +109,6 @@ public class LoginController implements ILogin {
 		mainController.setMainScreen(pane);
 	}
 
-	@Override
 	public void setMainController(MainController mainController) {
 		this.mainController = mainController;
 	}
@@ -127,7 +126,7 @@ public class LoginController implements ILogin {
 
 	private void showLandingLayout() {
 		Stage stage=(Stage)loginPane.getScene().getWindow();
-                FXMLLoader stageLoader = new FXMLLoader(this.getClass().getResource("/fxml/MainLayout_1.fxml"));
+                FXMLLoader stageLoader = new FXMLLoader(this.getClass().getResource("/fxml/MainLandingLayout.fxml"));
                 BorderPane rootLayout=null;
             try {
                 rootLayout = (BorderPane) stageLoader.load();
@@ -142,25 +141,6 @@ public class LoginController implements ILogin {
 		stage.setX(bounds.getMinX());
 		stage.setY(bounds.getMinY());
 		stage.setWidth(bounds.getWidth());
-		stage.setHeight(bounds.getHeight());
-		
-		FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/LandingLayout.fxml"));
-		loginPane=null; //test for getting rid of old pane
-                Pane pane = null;
-		try {
-			pane = loader.load();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		pane.setMaxWidth(bounds.getWidth()/1.5);
-		loginInterface = stageLoader.getController();
-		loginInterface.setMainController(mainController);
-                if (pane==null)
-                System.out.println("If pane is null");
-		mainController.setMainScreen(pane);
-		
-		
-		
-		
+		stage.setHeight(bounds.getHeight());	
 	}
 }
