@@ -32,7 +32,7 @@
             </ImageView>
             <MenuButton alignment="CENTER" contentDisplay="BOTTOM" graphicTextGap="5.0" layoutX="501.0" layoutY="12.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="129.0" text="test@test" textAlignment="CENTER" textFill="#fc0000" underline="true" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="1.0">
               <items>
-                <MenuItem mnemonicParsing="false" text="Settings          " />
+                <MenuItem mnemonicParsing="false" onAction="#settings" text="Settings          " />
                 <MenuItem mnemonicParsing="false" onAction="#logout" text="Log out" />
               </items>
                <font>
