@@ -2,6 +2,7 @@ package prs.controllers;
 
 import java.io.IOException;
 
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
@@ -36,6 +37,7 @@ public class MainController {
 	@FXML
 	public void initialize() {
 		showLoginLayout();
+		
 	}
 	@FXML
 	public void btnCloseHoverOn(MouseEvent event) {

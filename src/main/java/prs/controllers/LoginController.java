@@ -5,12 +5,16 @@ import java.io.UnsupportedEncodingException;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.PasswordField;
@@ -50,6 +54,7 @@ public class LoginController implements ILogin {
 	@FXML
 	private Pane loginPane;
 
+
 	@FXML
 	void onChangeEmail() {
 		if (email.getText().contains("@") && email.getText().length() > 5) {
@@ -63,7 +68,14 @@ public class LoginController implements ILogin {
 			signinButton.setDisable(true);
 		}
 	}
-
+	@FXML
+	void keySignIn(KeyEvent key) {
+		if(key.getCode()==KeyCode.ENTER) {
+			signIn();
+		}
+	}
+		    
+		
 	@FXML
 	void onChangePassword() {
 		/*
@@ -126,8 +138,11 @@ public class LoginController implements ILogin {
 
 	private void showLandingLayout() {
 		Stage stage=(Stage)loginPane.getScene().getWindow();
+		stage.close();
+		Stage newStage =new Stage();
+		newStage.initStyle(StageStyle.DECORATED);
                 FXMLLoader stageLoader = new FXMLLoader(this.getClass().getResource("/fxml/MainLandingLayout.fxml"));
-                BorderPane rootLayout=null;
+                BorderPane rootLayout=new BorderPane();
             try {
                 rootLayout = (BorderPane) stageLoader.load();
             } catch (IOException ex) {
@@ -135,12 +150,15 @@ public class LoginController implements ILogin {
             }
 
                 Scene scene = new Scene(rootLayout);
-                stage.setScene(scene);                
-		Screen screen = Screen.getPrimary();
-		Rectangle2D bounds = screen.getVisualBounds();
-		stage.setX(bounds.getMinX());
-		stage.setY(bounds.getMinY());
-		stage.setWidth(bounds.getWidth());
-		stage.setHeight(bounds.getHeight());	
+                newStage.setScene(scene);    
+                Screen screen = Screen.getPrimary();
+        		Rectangle2D bounds = screen.getVisualBounds();
+        		newStage.setX(bounds.getMinX());
+        		newStage.setY(bounds.getMinY());
+        		newStage.setWidth(bounds.getWidth());
+        		newStage.setHeight(bounds.getHeight());
+        		newStage.setTitle("Patient registration system");
+        		newStage.getIcons().add(new Image("/images/logo.png"));
+                newStage.show();
 	}
 }

@@ -1,0 +1,41 @@
+.table-view .column-header {
+     -fx-background-color: transparent;
+} 
+
+.table-view .column-header-background{
+    -fx-background-color: linear-gradient(#131313 0.0%, #424141 100.0%);
+    -fx-font-size:15px;
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: transparent; 
+    -fx-font-weight:bold;
+    -fx-text-fill: white;
+}
+
+
+.table-view .table-column{
+    -fx-alignment:center;
+}
+
+
+.table-view .table-cell{
+    -fx-font-weight:bold;
+    -fx-font-size:15px;          
+}
+
+.table-row-cell:selected {
+    -fx-border-color:transparent firebrick transparent firebrick  ;
+    -fx-border-width:2.0; 
+}
+
+
+
+.table-row-cell:hover {
+    -fx-background-color:orange;
+}
+
+
+.table-row-cell:focused {
+    -fx-background-color:grey;
+}
