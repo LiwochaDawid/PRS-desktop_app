@@ -33,6 +33,5 @@ public class LandingPageController {
 	void initialize() {
 			calendar.getChildren().add(new FullCalendarView(YearMonth.now()).getView());	
             Request request = new Request();
-            request.Get();
 	}
 }

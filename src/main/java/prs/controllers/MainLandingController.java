@@ -17,10 +17,15 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Shape;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import prs.util.file.Delete;
 
 
 
 public class MainLandingController {
+	private String token;
+	private String email;
+	private String password;
 	@FXML
 	private BorderPane mainBorderPane;
 	@FXML
@@ -41,6 +46,7 @@ public class MainLandingController {
 	private Button logout;
 	@FXML
 	void initialize() {
+		
 		//start icon import
 		//icon schedule
 		final Image ICON_CALENDAR = new Image(getClass().getResourceAsStream("/images/calendar_ico2.png"));
@@ -65,7 +71,6 @@ public class MainLandingController {
 		//end
 		initImage();
 		showLandingLayout();
-		
 	}
 	private void initImage() {
 		Image im = new Image("/images/lekarz.jpg",false);
@@ -118,7 +123,9 @@ public class MainLandingController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		PatientsController pc=loader.getController();
+		pc.setToken(token);
+		//System.out.println(token);
 		mainBorderPane.setCenter(pane);
 	}
 	@FXML
@@ -141,7 +148,9 @@ public class MainLandingController {
 	@FXML
 	public void initLogout() {
 		Stage stage = (Stage) mainBorderPane.getScene().getWindow();
-
+		stage.close();
+		Stage newStage = new Stage();
+		newStage.initStyle(StageStyle.UNDECORATED);
 		FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/MainLayout.fxml"));
 		BorderPane borderPane = null;
 		try {
@@ -152,14 +161,15 @@ public class MainLandingController {
 		}
 		Screen screen = Screen.getPrimary();
 		Rectangle2D bounds = screen.getVisualBounds();
-		stage.setX(bounds.getWidth() / 2 - (borderPane.getPrefWidth() / 2));
-		stage.setY(bounds.getHeight() / 2 - (borderPane.getPrefWidth() / 2) - 100);
-		stage.setHeight(borderPane.getPrefHeight());
-		stage.setWidth(borderPane.getPrefWidth());
+		newStage.setX(bounds.getWidth() / 2 - (borderPane.getPrefWidth() / 2));
+		newStage.setY(bounds.getHeight() / 2 - (borderPane.getPrefWidth() / 2) - 100);
+		newStage.setHeight(borderPane.getPrefHeight());
+		newStage.setWidth(borderPane.getPrefWidth());
 		Scene scene = new Scene(borderPane);
-		stage.setScene(scene);
+		newStage.setScene(scene);
+		Delete.deleteFile("token.txt");
 		new MainController();
-
+		newStage.show();
 	}
 
 	@FXML

@@ -10,11 +10,13 @@ import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 import com.google.gson.Gson;
 
@@ -37,9 +39,51 @@ public class Request {
 		gson = new Gson();
 	}
 
-	public void Get() {
-
+	public String Get(String path, String token) {
+		Url+=path+token;
+		HttpGet get = new HttpGet(Url);
+		System.out.println(Url);
+		get.setHeaders(headers);
+		
+		HttpResponse response=null;
+		String responseString =null;
+		
+		try {
+			response = httpClient.execute(get);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			responseString = EntityUtils.toString(response.getEntity());
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (response.getStatusLine().getStatusCode() != 200) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Token");
+			alert.setHeaderText("Invalid token");
+			alert.setContentText(
+					"Token expired or problem with server");
+			alert.showAndWait();
+		} /* else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Token");
+			alert.setHeaderText("Try again or later");
+			alert.setContentText("Server problem");
+			alert.showAndWait();
+		}*/
+		return responseString;
 	}
+		
+
 
 	public void Post() {
 

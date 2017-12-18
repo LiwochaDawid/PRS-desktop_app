@@ -25,6 +25,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import prs.main.Main;
+import prs.util.file.Save;
 
 import com.google.gson.Gson;
 import com.sun.javafx.tk.Toolkit;
@@ -128,9 +129,11 @@ public class LoginController implements ILogin {
 	public void sendDataToServer(String username, String password) {
 		Request request = new Request();
 		token = request.getToken(username, password);
-		if (token == null) {
+		
+		if (token.isEmpty()) {
 			System.out.println("heelo null");
 		} else {
+			new Save(token, "token");
 			showLandingLayout();
 		}
 
@@ -148,7 +151,6 @@ public class LoginController implements ILogin {
             } catch (IOException ex) {
                 Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
                 Scene scene = new Scene(rootLayout);
                 newStage.setScene(scene);    
                 Screen screen = Screen.getPrimary();

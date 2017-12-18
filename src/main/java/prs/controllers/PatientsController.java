@@ -1,7 +1,16 @@
 package prs.controllers;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,8 +26,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import prs.models.PatientTableViewModel;
+import prs.util.file.Open;
 
 public class PatientsController {
+	private String token;
 	@FXML
 	private TextField filterField;
 	@FXML
@@ -34,83 +45,26 @@ public class PatientsController {
 	
 	private ObservableList<PatientTableViewModel> masterData = FXCollections.observableArrayList();
 	private ObservableList<PatientTableViewModel> filteredData = FXCollections.observableArrayList();
-	
 	public PatientsController() {
+		try {
+			token=Open.openFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Request request = new Request();
+		String response=request.Get("/patient/all?", token);
+		JsonElement json = new JsonParser().parse(response);    
+		JsonArray array= json.getAsJsonArray();    
+		Iterator iterator = array.iterator();   
+		while(iterator.hasNext()){
+		    JsonElement json2 = (JsonElement)iterator.next();
+		    Gson gson = new Gson();
+		    PatientTableViewModel patient = gson.fromJson(json2, PatientTableViewModel.class);
+		    //can set some values in contact, if required 
+		    masterData.add(patient);
+		}
 		
-		
-        // Add some sample data to the master data
-        masterData.add(new PatientTableViewModel("Hans", "Muster", "hans.m@gmail.com", "731242154"));
-        masterData.add(new PatientTableViewModel("Ola", "Ferr", "olka.fair@gmail.com", "654521154"));
-        masterData.add(new PatientTableViewModel("Jan", "Kowalski", "j.kowalski@wp.pl", "500100100"));
-        masterData.add(new PatientTableViewModel("Adam", "Kalaf", "adam.k31@gmail.com", "664554551"));
-        masterData.add(new PatientTableViewModel("Sebastian1", "Parny1", "seba1.par@onet.pl", "700145542"));
-        masterData.add(new PatientTableViewModel("Hans1", "Muster1", "hans1.m@gmail.com", "731242154"));
-        masterData.add(new PatientTableViewModel("Ola1", "Ferr1", "olka1.fair@gmail.com", "654521154"));
-        masterData.add(new PatientTableViewModel("Jan1", "Kowalski1", "j1.kowalski@wp.pl", "500100100"));
-        masterData.add(new PatientTableViewModel("Adam1", "Kalaf1", "adam1.k31@gmail.com", "664554551"));
-        masterData.add(new PatientTableViewModel("Sebastian1", "Parny1", "seba1.par@onet.pl", "700145542"));
-        masterData.add(new PatientTableViewModel("Ola2", "Ferr2", "olka2.fair@gmail.com", "654521154"));
-        masterData.add(new PatientTableViewModel("Jan2", "Kowalski2", "j2.kowalski@wp.pl", "500100100"));
-        masterData.add(new PatientTableViewModel("Adam2", "Kalaf2", "adam2.k31@gmail.com", "664554551"));
-        masterData.add(new PatientTableViewModel("Sebastian2", "Parny2", "seba2.par@onet.pl", "700145542"));        
-        masterData.add(new PatientTableViewModel("Hans", "Muster", "hans.m@gmail.com", "731242154"));
-        masterData.add(new PatientTableViewModel("Ola", "Ferr", "olka.fair@gmail.com", "654521154"));
-        masterData.add(new PatientTableViewModel("Jan", "Kowalski", "j.kowalski@wp.pl", "500100100"));
-        masterData.add(new PatientTableViewModel("Adam", "Kalaf", "adam.k31@gmail.com", "664554551"));
-        masterData.add(new PatientTableViewModel("Sebastian1", "Parny1", "seba1.par@onet.pl", "700145542"));
-        masterData.add(new PatientTableViewModel("Hans1", "Muster1", "hans1.m@gmail.com", "731242154"));
-        masterData.add(new PatientTableViewModel("Ola1", "Ferr1", "olka1.fair@gmail.com", "654521154"));
-        masterData.add(new PatientTableViewModel("Jan1", "Kowalski1", "j1.kowalski@wp.pl", "500100100"));
-        masterData.add(new PatientTableViewModel("Adam1", "Kalaf1", "adam1.k31@gmail.com", "664554551"));
-        masterData.add(new PatientTableViewModel("Sebastian1", "Parny1", "seba1.par@onet.pl", "700145542"));
-        masterData.add(new PatientTableViewModel("Ola2", "Ferr2", "olka2.fair@gmail.com", "654521154"));
-        masterData.add(new PatientTableViewModel("Jan2", "Kowalski2", "j2.kowalski@wp.pl", "500100100"));
-        masterData.add(new PatientTableViewModel("Adam2", "Kalaf2", "adam2.k31@gmail.com", "664554551"));
-        masterData.add(new PatientTableViewModel("Sebastian2", "Parny2", "seba2.par@onet.pl", "700145542"));        
-        masterData.add(new PatientTableViewModel("Hans", "Muster", "hans.m@gmail.com", "731242154"));
-        masterData.add(new PatientTableViewModel("Ola", "Ferr", "olka.fair@gmail.com", "654521154"));
-        masterData.add(new PatientTableViewModel("Jan", "Kowalski", "j.kowalski@wp.pl", "500100100"));
-        masterData.add(new PatientTableViewModel("Adam", "Kalaf", "adam.k31@gmail.com", "664554551"));
-        masterData.add(new PatientTableViewModel("Sebastian1", "Parny1", "seba1.par@onet.pl", "700145542"));
-        masterData.add(new PatientTableViewModel("Hans1", "Muster1", "hans1.m@gmail.com", "731242154"));
-        masterData.add(new PatientTableViewModel("Ola1", "Ferr1", "olka1.fair@gmail.com", "654521154"));
-        masterData.add(new PatientTableViewModel("Jan1", "Kowalski1", "j1.kowalski@wp.pl", "500100100"));
-        masterData.add(new PatientTableViewModel("Adam1", "Kalaf1", "adam1.k31@gmail.com", "664554551"));
-        masterData.add(new PatientTableViewModel("Sebastian1", "Parny1", "seba1.par@onet.pl", "700145542"));
-        masterData.add(new PatientTableViewModel("Ola2", "Ferr2", "olka2.fair@gmail.com", "654521154"));
-        masterData.add(new PatientTableViewModel("Jan2", "Kowalski2", "j2.kowalski@wp.pl", "500100100"));
-        masterData.add(new PatientTableViewModel("Adam2", "Kalaf2", "adam2.k31@gmail.com", "664554551"));
-        masterData.add(new PatientTableViewModel("Sebastian2", "Parny2", "seba2.par@onet.pl", "700145542"));        
-        masterData.add(new PatientTableViewModel("Hans", "Muster", "hans.m@gmail.com", "731242154"));
-        masterData.add(new PatientTableViewModel("Ola", "Ferr", "olka.fair@gmail.com", "654521154"));
-        masterData.add(new PatientTableViewModel("Jan", "Kowalski", "j.kowalski@wp.pl", "500100100"));
-        masterData.add(new PatientTableViewModel("Adam", "Kalaf", "adam.k31@gmail.com", "664554551"));
-        masterData.add(new PatientTableViewModel("Sebastian1", "Parny1", "seba1.par@onet.pl", "700145542"));
-        masterData.add(new PatientTableViewModel("Hans1", "Muster1", "hans1.m@gmail.com", "731242154"));
-        masterData.add(new PatientTableViewModel("Ola1", "Ferr1", "olka1.fair@gmail.com", "654521154"));
-        masterData.add(new PatientTableViewModel("Jan1", "Kowalski1", "j1.kowalski@wp.pl", "500100100"));
-        masterData.add(new PatientTableViewModel("Adam1", "Kalaf1", "adam1.k31@gmail.com", "664554551"));
-        masterData.add(new PatientTableViewModel("Sebastian1", "Parny1", "seba1.par@onet.pl", "700145542"));
-        masterData.add(new PatientTableViewModel("Ola2", "Ferr2", "olka2.fair@gmail.com", "654521154"));
-        masterData.add(new PatientTableViewModel("Jan2", "Kowalski2", "j2.kowalski@wp.pl", "500100100"));
-        masterData.add(new PatientTableViewModel("Adam2", "Kalaf2", "adam2.k31@gmail.com", "664554551"));
-        masterData.add(new PatientTableViewModel("Sebastian2", "Parny2", "seba2.par@onet.pl", "700145542"));        
-        masterData.add(new PatientTableViewModel("Hans", "Muster", "hans.m@gmail.com", "731242154"));
-        masterData.add(new PatientTableViewModel("Ola", "Ferr", "olka.fair@gmail.com", "654521154"));
-        masterData.add(new PatientTableViewModel("Jan", "Kowalski", "j.kowalski@wp.pl", "500100100"));
-        masterData.add(new PatientTableViewModel("Adam", "Kalaf", "adam.k31@gmail.com", "664554551"));
-        masterData.add(new PatientTableViewModel("Sebastian1", "Parny1", "seba1.par@onet.pl", "700145542"));
-        masterData.add(new PatientTableViewModel("Hans1", "Muster1", "hans1.m@gmail.com", "731242154"));
-        masterData.add(new PatientTableViewModel("Ola1", "Ferr1", "olka1.fair@gmail.com", "654521154"));
-        masterData.add(new PatientTableViewModel("Jan1", "Kowalski1", "j1.kowalski@wp.pl", "500100100"));
-        masterData.add(new PatientTableViewModel("Adam1", "Kalaf1", "adam1.k31@gmail.com", "664554551"));
-        masterData.add(new PatientTableViewModel("Sebastian1", "Parny1", "seba1.par@onet.pl", "700145542"));
-        masterData.add(new PatientTableViewModel("Ola2", "Ferr2", "olka2.fair@gmail.com", "654521154"));
-        masterData.add(new PatientTableViewModel("Jan2", "Kowalski2", "j2.kowalski@wp.pl", "500100100"));
-        masterData.add(new PatientTableViewModel("Adam2", "Kalaf2", "adam2.k31@gmail.com", "664554551"));
-        masterData.add(new PatientTableViewModel("Sebastian2", "Parny2", "seba2.par@onet.pl", "700145542"));        
-        
-        
         // Initially add all data to filtered data
         filteredData.addAll(masterData);
 
@@ -123,6 +77,9 @@ public class PatientsController {
             }
         });
     }
+	public void setToken(String token) {
+		this.token=token;
+	}
 
     /**
      * Initializes the controller class. This method is automatically called
@@ -130,6 +87,7 @@ public class PatientsController {
      */
     @FXML
     private void initialize() {
+    	
     	// Initialize the person table
     	
     	name.setCellFactory(TextFieldTableCell.forTableColumn());
