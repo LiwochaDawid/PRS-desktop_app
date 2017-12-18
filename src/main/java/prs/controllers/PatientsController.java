@@ -39,7 +39,11 @@ public class PatientsController {
 	@FXML
 	private TableColumn<PatientTableViewModel, String> surname;
 	@FXML
-	private TableColumn<PatientTableViewModel, String> email;
+	private TableColumn<PatientTableViewModel, String> street;
+	@FXML
+	private TableColumn<PatientTableViewModel, String> postcode;
+	@FXML
+	private TableColumn<PatientTableViewModel, String> city;
 	@FXML
 	private TableColumn<PatientTableViewModel, String> phoneNumber;
 	
@@ -112,14 +116,36 @@ public class PatientsController {
     	        }
     	    }
     	);
-    	email.setCellFactory(TextFieldTableCell.forTableColumn());
-    	email.setOnEditCommit(
+    	street.setCellFactory(TextFieldTableCell.forTableColumn());
+    	street.setOnEditCommit(
     	    new EventHandler<CellEditEvent<PatientTableViewModel, String>>() {
     	        @Override
     	        public void handle(CellEditEvent<PatientTableViewModel, String> t) {
     	            ((PatientTableViewModel) t.getTableView().getItems().get(
     	                t.getTablePosition().getRow())
-    	                ).setEmail(t.getNewValue());
+    	                ).setStreet(t.getNewValue());
+    	        }
+    	    }
+    	);
+    	postcode.setCellFactory(TextFieldTableCell.forTableColumn());
+    	postcode.setOnEditCommit(
+    	    new EventHandler<CellEditEvent<PatientTableViewModel, String>>() {
+    	        @Override
+    	        public void handle(CellEditEvent<PatientTableViewModel, String> t) {
+    	            ((PatientTableViewModel) t.getTableView().getItems().get(
+    	                t.getTablePosition().getRow())
+    	                ).setPostcode(t.getNewValue());
+    	        }
+    	    }
+    	);
+    	city.setCellFactory(TextFieldTableCell.forTableColumn());
+    	city.setOnEditCommit(
+    	    new EventHandler<CellEditEvent<PatientTableViewModel, String>>() {
+    	        @Override
+    	        public void handle(CellEditEvent<PatientTableViewModel, String> t) {
+    	            ((PatientTableViewModel) t.getTableView().getItems().get(
+    	                t.getTablePosition().getRow())
+    	                ).setCity(t.getNewValue());
     	        }
     	    }
     	);
@@ -138,8 +164,12 @@ public class PatientsController {
                 new PropertyValueFactory<PatientTableViewModel, String>("Name"));
         surname.setCellValueFactory(
                 new PropertyValueFactory<PatientTableViewModel, String>("Surname"));
-        email.setCellValueFactory(
-                new PropertyValueFactory<PatientTableViewModel, String>("Email"));
+        street.setCellValueFactory(
+                new PropertyValueFactory<PatientTableViewModel, String>("Street"));
+        postcode.setCellValueFactory(
+                new PropertyValueFactory<PatientTableViewModel, String>("Postcode"));
+        city.setCellValueFactory(
+                new PropertyValueFactory<PatientTableViewModel, String>("City"));
         phoneNumber.setCellValueFactory(
                 new PropertyValueFactory<PatientTableViewModel, String>("PhoneNumber"));
         // Add filtered data to the table
