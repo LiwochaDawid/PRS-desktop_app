@@ -18,7 +18,7 @@ public class FullCalendarView {
 
     private ArrayList<AnchorPaneNode> allCalendarDays = new ArrayList<>(35);
     private VBox view;
-    private Text calendarTitle;
+    private Label calendarTitle;
     private YearMonth currentYearMonth;
 
     /**
@@ -30,7 +30,7 @@ public class FullCalendarView {
         // Create the calendar grid pane
         GridPane calendar = new GridPane();
         calendar.setAlignment(Pos.CENTER);
-        calendar.setPrefSize(1200, 800);
+        calendar.setMinSize(1200, 800);
         calendar.setGridLinesVisible(true);
         // Create rows and columns with anchor panes for the calendar
         for (int i = 0; i < 6; i++) {
@@ -57,7 +57,10 @@ public class FullCalendarView {
             dayLabels.add(ap, col++, 0);
         }
         // Create calendarTitle and buttons to change current month
-        calendarTitle = new Text();
+        
+        calendarTitle = new Label();
+        calendarTitle.setMinSize(100, 16);
+        calendarTitle.setAlignment(Pos.CENTER);
         Button previousMonth = new Button("<<");
         previousMonth.setOnAction(e -> previousMonth());
         Button nextMonth = new Button(">>");
@@ -82,6 +85,8 @@ public class FullCalendarView {
             calendarDate = calendarDate.minusDays(1);
         }
         // Populate the calendar with day numbers
+        boolean isBeforeCurrentMonth = true;
+        boolean isAfterCurrentMonth = false;
         for (AnchorPaneNode ap : allCalendarDays) {
             if (ap.getChildren().size() != 0) {
                 ap.getChildren().remove(0);
@@ -91,6 +96,23 @@ public class FullCalendarView {
             x.setMaxWidth(Double.MAX_VALUE);
             x.setAlignment(Pos.CENTER);
             x.setFont(Font.font ("Verdana",FontWeight.BOLD, 20));
+
+            if (isBeforeCurrentMonth) {
+            	if (calendarDate.getDayOfMonth() > 1) {
+            		x.setDisable(true);
+            	}
+            	else {
+            		isBeforeCurrentMonth = false;
+            	}
+            }
+            else {
+            	if (calendarDate.getDayOfMonth() == 1) {
+            		isAfterCurrentMonth = true;
+            	}
+            	if (isAfterCurrentMonth) {
+            		x.setDisable(true);
+            	}
+            }
             
             ap.setDate(calendarDate);
             AnchorPane.setTopAnchor(x, 5.0);
