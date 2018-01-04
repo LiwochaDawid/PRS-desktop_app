@@ -108,6 +108,7 @@ public class SignUpController implements ILogin {
 		mainController.showLoginLayout();
 	}
 
+	@Override
 	public void setMainController(MainController mainController) {
 		this.mainController = mainController;
 	}

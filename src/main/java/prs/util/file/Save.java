@@ -1,11 +1,8 @@
 package prs.util.file;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class Save {
 	PrintWriter writer;

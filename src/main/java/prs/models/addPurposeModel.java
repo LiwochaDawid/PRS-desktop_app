@@ -1,7 +1,5 @@
 package prs.models;
 
-import java.sql.Time;
-
 public class addPurposeModel {
 	private String name;
 	private String description;

@@ -1,22 +1,14 @@
 package prs.controllers;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -24,21 +16,10 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import prs.main.Main;
 import prs.util.file.Save;
 
-import com.google.gson.Gson;
-import com.sun.javafx.tk.Toolkit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicHeader;
 
 public class LoginController implements ILogin {
 	private MainController mainController;
@@ -122,6 +103,7 @@ public class LoginController implements ILogin {
 		mainController.setMainScreen(pane);
 	}
 
+	@Override
 	public void setMainController(MainController mainController) {
 		this.mainController = mainController;
 	}

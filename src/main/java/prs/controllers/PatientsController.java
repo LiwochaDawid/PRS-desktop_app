@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.json.JSONObject;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -99,16 +97,15 @@ public class PatientsController {
     	    new EventHandler<CellEditEvent<PatientTableViewModel, String>>() {
     	        @Override
     	        public void handle(CellEditEvent<PatientTableViewModel, String> t) {
-    	            ((PatientTableViewModel) t.getTableView().getItems().get(
-    	                t.getTablePosition().getRow())
-    	                ).setName(t.getNewValue());
+    	            t.getTableView().getItems().get(
+    	                t.getTablePosition().getRow()).setName(t.getNewValue());
     	            try {
     	    			token=Open.openFile();
     	    		} catch (IOException e) {
     	    			// TODO Auto-generated catch block
     	    			e.printStackTrace();
     	    		}
-    	            request.Post("/patient/update?", token, (PatientTableViewModel)t.getTableView().getItems().get(t.getTablePosition().getRow()));
+    	            request.Post("/patient/update?", token, t.getTableView().getItems().get(t.getTablePosition().getRow()));
     	        }
     	    }
     	);
@@ -117,16 +114,15 @@ public class PatientsController {
     	    new EventHandler<CellEditEvent<PatientTableViewModel, String>>() {
     	        @Override
     	        public void handle(CellEditEvent<PatientTableViewModel, String> t) {
-    	            ((PatientTableViewModel) t.getTableView().getItems().get(
-    	                t.getTablePosition().getRow())
-    	                ).setSurname(t.getNewValue());
+    	            t.getTableView().getItems().get(
+    	                t.getTablePosition().getRow()).setSurname(t.getNewValue());
     	            try {
     	    			token=Open.openFile();
     	    		} catch (IOException e) {
     	    			// TODO Auto-generated catch block
     	    			e.printStackTrace();
     	    		}
-    	            request.Post("/patient/update?", token, (PatientTableViewModel)t.getTableView().getItems().get(t.getTablePosition().getRow()));
+    	            request.Post("/patient/update?", token, t.getTableView().getItems().get(t.getTablePosition().getRow()));
     	        }
     	    }
     	);
@@ -135,16 +131,15 @@ public class PatientsController {
     	    new EventHandler<CellEditEvent<PatientTableViewModel, String>>() {
     	        @Override
     	        public void handle(CellEditEvent<PatientTableViewModel, String> t) {
-    	            ((PatientTableViewModel) t.getTableView().getItems().get(
-    	                t.getTablePosition().getRow())
-    	                ).setStreet(t.getNewValue());
+    	            t.getTableView().getItems().get(
+    	                t.getTablePosition().getRow()).setStreet(t.getNewValue());
     	            try {
     	    			token=Open.openFile();
     	    		} catch (IOException e) {
     	    			// TODO Auto-generated catch block
     	    			e.printStackTrace();
     	    		}
-    	            request.Post("/patient/update?", token, (PatientTableViewModel)t.getTableView().getItems().get(t.getTablePosition().getRow()));
+    	            request.Post("/patient/update?", token, t.getTableView().getItems().get(t.getTablePosition().getRow()));
     	        }
     	    }
     	);
@@ -153,16 +148,15 @@ public class PatientsController {
     	    new EventHandler<CellEditEvent<PatientTableViewModel, String>>() {
     	        @Override
     	        public void handle(CellEditEvent<PatientTableViewModel, String> t) {
-    	            ((PatientTableViewModel) t.getTableView().getItems().get(
-    	                t.getTablePosition().getRow())
-    	                ).setPostcode(t.getNewValue());
+    	            t.getTableView().getItems().get(
+    	                t.getTablePosition().getRow()).setPostcode(t.getNewValue());
     	            try {
     	    			token=Open.openFile();
     	    		} catch (IOException e) {
     	    			// TODO Auto-generated catch block
     	    			e.printStackTrace();
     	    		}
-    	            request.Post("/patient/update?", token, (PatientTableViewModel)t.getTableView().getItems().get(t.getTablePosition().getRow()));
+    	            request.Post("/patient/update?", token, t.getTableView().getItems().get(t.getTablePosition().getRow()));
     	        }
     	    }
     	);
@@ -171,16 +165,15 @@ public class PatientsController {
     	    new EventHandler<CellEditEvent<PatientTableViewModel, String>>() {
     	        @Override
     	        public void handle(CellEditEvent<PatientTableViewModel, String> t) {
-    	            ((PatientTableViewModel) t.getTableView().getItems().get(
-    	                t.getTablePosition().getRow())
-    	                ).setCity(t.getNewValue());
+    	            t.getTableView().getItems().get(
+    	                t.getTablePosition().getRow()).setCity(t.getNewValue());
     	            try {
     	    			token=Open.openFile();
     	    		} catch (IOException e) {
     	    			// TODO Auto-generated catch block
     	    			e.printStackTrace();
     	    		}
-    	            request.Post("/patient/update?", token, (PatientTableViewModel)t.getTableView().getItems().get(t.getTablePosition().getRow()));
+    	            request.Post("/patient/update?", token, t.getTableView().getItems().get(t.getTablePosition().getRow()));
     	        }
     	    }
     	);
@@ -189,16 +182,15 @@ public class PatientsController {
     	    new EventHandler<CellEditEvent<PatientTableViewModel, String>>() {
     	        @Override
     	        public void handle(CellEditEvent<PatientTableViewModel, String> t) {
-    	            ((PatientTableViewModel) t.getTableView().getItems().get(
-    	                t.getTablePosition().getRow())
-    	                ).setPhoneNumber(t.getNewValue());
+    	            t.getTableView().getItems().get(
+    	                t.getTablePosition().getRow()).setPhoneNumber(t.getNewValue());
     	            try {
     	    			token=Open.openFile();
     	    		} catch (IOException e) {
     	    			// TODO Auto-generated catch block
     	    			e.printStackTrace();
     	    		}
-    	            request.Post("/patient/update?", token, (PatientTableViewModel)t.getTableView().getItems().get(t.getTablePosition().getRow()));
+    	            request.Post("/patient/update?", token, t.getTableView().getItems().get(t.getTablePosition().getRow()));
     	        }
     	    }
     	);

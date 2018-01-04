@@ -16,16 +16,12 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
-
 import com.google.gson.Gson;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 import prs.models.AccountModel;
-import prs.models.DoctorModel;
-import prs.models.PatientTableViewModel;
 import prs.models.SignUpModel;
 
 public class Request {

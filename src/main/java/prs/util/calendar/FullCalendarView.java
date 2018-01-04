@@ -9,8 +9,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
@@ -54,7 +52,7 @@ public class FullCalendarView {
         for (Text txt : dayNames) {
             AnchorPane ap = new AnchorPane();
             ap.setPrefSize(200, 10);
-            ap.setBottomAnchor(txt, 5.0);
+            AnchorPane.setBottomAnchor(txt, 5.0);
             ap.getChildren().add(txt);
             dayLabels.add(ap, col++, 0);
         }
@@ -95,10 +93,10 @@ public class FullCalendarView {
             x.setFont(Font.font ("Verdana",FontWeight.BOLD, 20));
             
             ap.setDate(calendarDate);
-            ap.setTopAnchor(x, 5.0);
-            ap.setBottomAnchor(x, 5.0);
-            ap.setRightAnchor(x, 5.0);
-            ap.setLeftAnchor(x, 5.0);
+            AnchorPane.setTopAnchor(x, 5.0);
+            AnchorPane.setBottomAnchor(x, 5.0);
+            AnchorPane.setRightAnchor(x, 5.0);
+            AnchorPane.setLeftAnchor(x, 5.0);
             ap.getChildren().add(x);
             calendarDate = calendarDate.plusDays(1);
         }

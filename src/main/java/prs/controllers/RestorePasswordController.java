@@ -1,14 +1,11 @@
 package prs.controllers;
 
-import java.io.IOException;
-
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.Pane;
 
 public class RestorePasswordController implements ILogin {
 	private MainController mainController;
 
+	@Override
 	public void setMainController(MainController mainController) {
 		this.mainController = mainController;
 	}
