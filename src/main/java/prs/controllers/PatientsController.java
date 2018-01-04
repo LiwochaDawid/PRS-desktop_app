@@ -46,7 +46,7 @@ public class PatientsController {
 	private TableColumn<PatientTableViewModel, String> city;
 	@FXML
 	private TableColumn<PatientTableViewModel, String> phoneNumber;
-	
+	Request request = new Request();
 	private ObservableList<PatientTableViewModel> masterData = FXCollections.observableArrayList();
 	private ObservableList<PatientTableViewModel> filteredData = FXCollections.observableArrayList();
 	public PatientsController() {
@@ -65,7 +65,7 @@ public class PatientsController {
 		    JsonElement json2 = (JsonElement)iterator.next();
 		    Gson gson = new Gson();
 		    PatientTableViewModel patient = gson.fromJson(json2, PatientTableViewModel.class);
-		    //can set some values in contact, if required 
+		    //System.out.println(patient.get);
 		    masterData.add(patient);
 		}
 		
@@ -91,7 +91,7 @@ public class PatientsController {
      */
     @FXML
     private void initialize() {
-    	
+    	System.out.println(token);
     	// Initialize the person table
     	
     	name.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -102,6 +102,13 @@ public class PatientsController {
     	            ((PatientTableViewModel) t.getTableView().getItems().get(
     	                t.getTablePosition().getRow())
     	                ).setName(t.getNewValue());
+    	            try {
+    	    			token=Open.openFile();
+    	    		} catch (IOException e) {
+    	    			// TODO Auto-generated catch block
+    	    			e.printStackTrace();
+    	    		}
+    	            request.Post("/patient/update?", token, (PatientTableViewModel)t.getTableView().getItems().get(t.getTablePosition().getRow()));
     	        }
     	    }
     	);
@@ -113,6 +120,13 @@ public class PatientsController {
     	            ((PatientTableViewModel) t.getTableView().getItems().get(
     	                t.getTablePosition().getRow())
     	                ).setSurname(t.getNewValue());
+    	            try {
+    	    			token=Open.openFile();
+    	    		} catch (IOException e) {
+    	    			// TODO Auto-generated catch block
+    	    			e.printStackTrace();
+    	    		}
+    	            request.Post("/patient/update?", token, (PatientTableViewModel)t.getTableView().getItems().get(t.getTablePosition().getRow()));
     	        }
     	    }
     	);
@@ -124,6 +138,13 @@ public class PatientsController {
     	            ((PatientTableViewModel) t.getTableView().getItems().get(
     	                t.getTablePosition().getRow())
     	                ).setStreet(t.getNewValue());
+    	            try {
+    	    			token=Open.openFile();
+    	    		} catch (IOException e) {
+    	    			// TODO Auto-generated catch block
+    	    			e.printStackTrace();
+    	    		}
+    	            request.Post("/patient/update?", token, (PatientTableViewModel)t.getTableView().getItems().get(t.getTablePosition().getRow()));
     	        }
     	    }
     	);
@@ -135,6 +156,13 @@ public class PatientsController {
     	            ((PatientTableViewModel) t.getTableView().getItems().get(
     	                t.getTablePosition().getRow())
     	                ).setPostcode(t.getNewValue());
+    	            try {
+    	    			token=Open.openFile();
+    	    		} catch (IOException e) {
+    	    			// TODO Auto-generated catch block
+    	    			e.printStackTrace();
+    	    		}
+    	            request.Post("/patient/update?", token, (PatientTableViewModel)t.getTableView().getItems().get(t.getTablePosition().getRow()));
     	        }
     	    }
     	);
@@ -146,6 +174,13 @@ public class PatientsController {
     	            ((PatientTableViewModel) t.getTableView().getItems().get(
     	                t.getTablePosition().getRow())
     	                ).setCity(t.getNewValue());
+    	            try {
+    	    			token=Open.openFile();
+    	    		} catch (IOException e) {
+    	    			// TODO Auto-generated catch block
+    	    			e.printStackTrace();
+    	    		}
+    	            request.Post("/patient/update?", token, (PatientTableViewModel)t.getTableView().getItems().get(t.getTablePosition().getRow()));
     	        }
     	    }
     	);
@@ -157,6 +192,13 @@ public class PatientsController {
     	            ((PatientTableViewModel) t.getTableView().getItems().get(
     	                t.getTablePosition().getRow())
     	                ).setPhoneNumber(t.getNewValue());
+    	            try {
+    	    			token=Open.openFile();
+    	    		} catch (IOException e) {
+    	    			// TODO Auto-generated catch block
+    	    			e.printStackTrace();
+    	    		}
+    	            request.Post("/patient/update?", token, (PatientTableViewModel)t.getTableView().getItems().get(t.getTablePosition().getRow()));
     	        }
     	    }
     	);

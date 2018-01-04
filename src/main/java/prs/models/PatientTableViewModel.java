@@ -1,19 +1,23 @@
 package prs.models;
 
 public class PatientTableViewModel {
+	private int patientID;
 	private String name;
 	private String surname;
 	private String street;
 	private String postcode;
 	private String city;
+	private String country;
 	private String phoneNumber;
 	
-	public PatientTableViewModel(String name, String surname, String street, String postcode, String city,  String phoneNumber) {
+	public PatientTableViewModel(int patientID, String name, String surname, String street, String postcode, String city, String country, String phoneNumber) {
+		this.patientID=patientID;
 		this.name=name;
 		this.surname=surname;
 		this.street=street;
 		this.postcode=postcode;
 		this.city=city;
+		this.country=country;
 		this.phoneNumber=phoneNumber;
 	}
 
@@ -63,6 +67,30 @@ public class PatientTableViewModel {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public int getPatientId() {
+		return patientID;
+	}
+
+	public void setPatientId(int patientID) {
+		this.patientID = patientID;
+	}
+
+	public int getPatientID() {
+		return patientID;
+	}
+
+	public void setPatientID(int patientID) {
+		this.patientID = patientID;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 	
 }

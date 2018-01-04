@@ -10,15 +10,15 @@ public class PatientModel {
     private String city;
     private String country;
     private String phoneNumber;
-    public PatientModel(PatientModel patient) {
-		this.patientID = patient.getPatientID();
-		this.name = patient.getName();
-		this.surname = patient.getSurname();
-		this.street = patient.getStreet();
-		this.postcode = patient.getPostcode();
-		this.city = patient.getCity();
-		this.country = patient.getCountry();
-		this.phoneNumber = patient.getPhoneNumber();
+    public PatientModel(int patientID, String name, String surname, String street, String postcode,String city, String country, String phoneNumber) {
+		this.patientID = patientID;
+		this.name = name;
+		this.surname = surname;
+		this.street = street;
+		this.postcode = postcode;
+		this.city = city;
+		this.country = country;
+		this.phoneNumber = phoneNumber;
 	}
 	public final int getPatientID() {
 		return patientID;

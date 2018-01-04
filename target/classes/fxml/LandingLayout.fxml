@@ -1,52 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <BorderPane id="borderPane" fx:id="borderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" stylesheets="@../styles/schedule.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="prs.controllers.LandingPageController">
-   <top>
-      <GridPane id="topGrid" alignment="CENTER" maxWidth="-Infinity" prefHeight="70.0" prefWidth="700.0" stylesheets="@../styles/landingPage.css" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <BorderPane.margin>
-            <Insets top="20.0" />
-         </BorderPane.margin>
-         <children>
-            <Label alignment="CENTER" prefHeight="50.0" prefWidth="100.0" text="Today visit's" textAlignment="CENTER" GridPane.halignment="CENTER">
-               <font>
-                  <Font name="Arial Black" size="14.0" />
-               </font>
-            </Label>
-            <Label text="Tommorow" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-               <font>
-                  <Font name="Arial Black" size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="todayVisits" text="Nan" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-               <font>
-                  <Font name="Arial Black" size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="tommorowVisits" text="Nan" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-               <font>
-                  <Font name="Arial Black" size="14.0" />
-               </font>
-            </Label>
-         </children>
-      </GridPane>
-   </top>
    <center>
       <VBox fx:id="calendar" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
    </center>

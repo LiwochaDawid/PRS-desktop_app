@@ -1,23 +1,25 @@
 package prs.models;
 
-public class VisitTableViewModel {
-	private String date;
+import java.util.Date;
+
+public class VisitModelTable {
+	private Date date;
 	private String name;
 	private String surname;
 	private String purpose;
 	
-	public VisitTableViewModel(String date, String name, String surname, String purpose) {
+	public VisitModelTable(Date date, String name, String surname, String purpose) {
 		this.date=date;
 		this.name=name;
 		this.surname=surname;
 		this.purpose=purpose;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 

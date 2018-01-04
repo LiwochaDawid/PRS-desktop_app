@@ -5,7 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import prs.models.AccountModel;
-import prs.models.DoctorModel;
+import prs.models.SignUpModel;
 import javafx.scene.control.Alert.AlertType;
 
 public class SignUpController implements ILogin {
@@ -15,7 +15,7 @@ public class SignUpController implements ILogin {
 	private boolean confirmedEmail = false;
 	private boolean correctPassword = false;
 	private boolean confirmedPassword = false;
-	DoctorModel doctor;
+	SignUpModel doctor;
 	AccountModel account;
 	Request request;
 	@FXML
@@ -57,7 +57,7 @@ public class SignUpController implements ILogin {
 		initialize();
 		if (correctEmail && confirmedEmail && correctPassword && confirmedPassword && name.getText() != null && surname.getText()!=null
 		&& prefix.getText() != null && street.getText() != null && postCode.getText() != null && city.getText() != null) {
-			doctor=new DoctorModel(name.getText(), surname.getText(), prefix.getText(), street.getText(), postCode.getText(), city.getText(),
+			doctor=new SignUpModel(name.getText(), surname.getText(), prefix.getText(), street.getText(), postCode.getText(), city.getText(),
 			country.getText(), phoneNumber.getText());
 			account=new AccountModel(email.getText(), password.getText());
 			request.createDoctorAccount("/account/sign_up/doctor", account, doctor);

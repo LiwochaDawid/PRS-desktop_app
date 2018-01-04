@@ -3,12 +3,13 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="anchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="prs.controllers.SettingsController">
    <children>
       <ImageView fitHeight="289.0" fitWidth="250.0" layoutX="86.0" layoutY="37.0" pickOnBounds="true" AnchorPane.topAnchor="37.0">
          <image>
@@ -29,82 +30,37 @@
             <Font name="Baskerville Old Face" size="21.0" />
          </font>
       </Label>
-      <Label layoutX="407.0" layoutY="105.0" text="Surname:" AnchorPane.leftAnchor="407.0" AnchorPane.topAnchor="105.0">
+      <Label layoutX="407.0" layoutY="105.0" text="Surname:" AnchorPane.leftAnchor="407.0" AnchorPane.topAnchor="110.0">
          <font>
             <Font name="Baskerville Old Face" size="21.0" />
          </font>
       </Label>
-      <Label layoutX="407.0" layoutY="130.0" prefHeight="26.0" prefWidth="71.0" text="Prefix:" AnchorPane.leftAnchor="407.0" AnchorPane.topAnchor="130.0">
+      <Label layoutX="407.0" layoutY="130.0" prefHeight="26.0" prefWidth="71.0" text="Prefix:" AnchorPane.leftAnchor="407.0" AnchorPane.topAnchor="140.0">
          <font>
             <Font name="Baskerville Old Face" size="21.0" />
          </font>
       </Label>
-      <Label layoutX="407.0" layoutY="155.0" text="Email:" AnchorPane.leftAnchor="407.0" AnchorPane.topAnchor="155.0">
+      <Label layoutX="407.0" layoutY="173.0" text="Street:" AnchorPane.leftAnchor="407.0" AnchorPane.topAnchor="170.0">
          <font>
             <Font name="Baskerville Old Face" size="21.0" />
          </font>
       </Label>
-      <Label layoutX="407.0" layoutY="180.0" text="Street:" AnchorPane.leftAnchor="407.0" AnchorPane.topAnchor="180.0">
+      <Label layoutX="407.0" layoutY="203.0" text="Post code:" AnchorPane.leftAnchor="407.0" AnchorPane.topAnchor="200.0">
          <font>
             <Font name="Baskerville Old Face" size="21.0" />
          </font>
       </Label>
-      <Label layoutX="407.0" layoutY="205.0" text="Post code" AnchorPane.leftAnchor="407.0" AnchorPane.topAnchor="205.0">
+      <Label layoutX="407.0" layoutY="233.0" text="City:" AnchorPane.leftAnchor="407.0" AnchorPane.topAnchor="230.0">
          <font>
             <Font name="Baskerville Old Face" size="21.0" />
          </font>
       </Label>
-      <Label layoutX="407.0" layoutY="230.0" text="City:" AnchorPane.leftAnchor="407.0" AnchorPane.topAnchor="230.0">
+      <Label layoutX="407.0" layoutY="263.0" text="Phone number:" AnchorPane.leftAnchor="407.0" AnchorPane.topAnchor="260.0">
          <font>
             <Font name="Baskerville Old Face" size="21.0" />
          </font>
       </Label>
-      <Label layoutX="490.0" layoutY="80.0" text="Jan" AnchorPane.topAnchor="80.0">
-         <font>
-            <Font name="Baskerville Old Face" size="21.0" />
-         </font>
-      </Label>
-      <Label layoutX="505.0" layoutY="105.0" text="Kowalski" AnchorPane.topAnchor="105.0">
-         <font>
-            <Font name="Baskerville Old Face" size="21.0" />
-         </font>
-      </Label>
-      <Label layoutX="493.0" layoutY="130.0" text="doktor hab." AnchorPane.topAnchor="130.0">
-         <font>
-            <Font name="Baskerville Old Face" size="21.0" />
-         </font>
-      </Label>
-      <Label layoutX="494.0" layoutY="155.0" text="jan.kowalski@dent.com" AnchorPane.topAnchor="155.0">
-         <font>
-            <Font name="Baskerville Old Face" size="21.0" />
-         </font>
-      </Label>
-      <Label layoutX="495.0" layoutY="180.0" text="3 Maja 13" AnchorPane.topAnchor="180.0">
-         <font>
-            <Font name="Baskerville Old Face" size="21.0" />
-         </font>
-      </Label>
-      <Label layoutX="494.0" layoutY="205.0" text="32-412" AnchorPane.topAnchor="205.0">
-         <font>
-            <Font name="Baskerville Old Face" size="21.0" />
-         </font>
-      </Label>
-      <Label layoutX="494.0" layoutY="230.0" text="Warszawa" AnchorPane.topAnchor="230.0">
-         <font>
-            <Font name="Baskerville Old Face" size="21.0" />
-         </font>
-      </Label>
-      <Label layoutX="407.0" layoutY="255.0" text="Phone number:" AnchorPane.leftAnchor="407.0" AnchorPane.topAnchor="255.0">
-         <font>
-            <Font name="Baskerville Old Face" size="21.0" />
-         </font>
-      </Label>
-      <Label layoutX="561.0" layoutY="255.0" text="500101010" AnchorPane.topAnchor="255.0">
-         <font>
-            <Font name="Baskerville Old Face" size="21.0" />
-         </font>
-      </Label>
-      <Button defaultButton="true" layoutX="621.0" layoutY="37.0" mnemonicParsing="false" stylesheets="@../styles/btn_settings.css" text="Change data" AnchorPane.topAnchor="37.0">
+      <Button fx:id="changeDataBtn" defaultButton="true" layoutX="621.0" layoutY="37.0" mnemonicParsing="false" onAction="#changeData" stylesheets="@../styles/btn_settings.css" text="Change data" AnchorPane.topAnchor="37.0">
          <font>
             <Font size="16.0" />
          </font>
@@ -114,7 +70,7 @@
             <Font name="Baskerville Old Face" size="21.0" />
          </font>
       </Label>
-      <Button layoutX="274.0" layoutY="550.0" mnemonicParsing="false" stylesheets="@../styles/btn_settings.css" text="Change password">
+      <Button disable="true" layoutX="274.0" layoutY="550.0" mnemonicParsing="false" stylesheets="@../styles/btn_settings.css" text="Change password">
          <font>
             <Font size="16.0" />
          </font>
@@ -124,7 +80,7 @@
             <Font name="Baskerville Old Face" size="21.0" />
          </font>
       </Label>
-      <Button layoutX="273.0" layoutY="596.0" mnemonicParsing="false" stylesheets="@../styles/btn_settings.css" text="Delete account">
+      <Button disable="true" layoutX="273.0" layoutY="596.0" mnemonicParsing="false" stylesheets="@../styles/btn_settings.css" text="Delete account">
          <font>
             <Font size="16.0" />
          </font>
@@ -134,8 +90,20 @@
             <Font name="Baskerville Old Face" size="21.0" />
          </font>
       </Label>
-      <Button layoutX="273.0" layoutY="406.0" mnemonicParsing="false" stylesheets="@../styles/btn_settings.css" text="Add / Edit / Delete">
+      <Button layoutX="273.0" layoutY="406.0" mnemonicParsing="false" onAction="#loadPurposes" stylesheets="@../styles/btn_settings.css" text="Add / Edit / Delete">
       	 <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <TextField fx:id="name" disable="true" layoutX="469.0" layoutY="80.0" promptText="Type name" style="-fx-background-color: transparent; -fx-font-size: 16; -fx-font-family: &quot;Baskerville Old Face&quot;;" AnchorPane.leftAnchor="469.0" />
+      <TextField fx:id="surname" disable="true" layoutX="495.0" layoutY="110.0" promptText="Type surname" style="-fx-background-color: transparent; -fx-font-size: 16; -fx-font-family: &quot;Baskerville Old Face&quot;;" AnchorPane.leftAnchor="495.0" />
+      <TextField fx:id="prefix" disable="true" layoutX="469.0" layoutY="140.0" promptText="Type prefix" style="-fx-background-color: transparent; -fx-font-size: 16; -fx-font-family: &quot;Baskerville Old Face&quot;;" />
+      <TextField fx:id="street" disable="true" layoutX="469.0" layoutY="170.0" promptText="Type street" style="-fx-background-color: transparent; -fx-font-size: 16; -fx-font-family: &quot;Baskerville Old Face&quot;;" />
+      <TextField fx:id="postcode" disable="true" layoutX="502.0" layoutY="200.0" promptText="Type post-code" style="-fx-background-color: transparent; -fx-font-size: 16; -fx-font-family: &quot;Baskerville Old Face&quot;;" />
+      <TextField fx:id="city" disable="true" layoutX="451.0" layoutY="230.0" promptText="Type city" style="-fx-background-color: transparent; -fx-font-size: 16; -fx-font-family: &quot;Baskerville Old Face&quot;;" />
+      <TextField fx:id="phoneNumber" disable="true" layoutX="545.0" layoutY="260.0" promptText="Type phone num" style="-fx-background-color: transparent; -fx-font-size: 16; -fx-font-family: &quot;Baskerville Old Face&quot;;" />
+      <Button fx:id="saveBtn" defaultButton="true" layoutX="621.0" layoutY="37.0" mnemonicParsing="false" onAction="#save" stylesheets="@../styles/btn_settings.css" text="Save" visible="false">
+         <font>
             <Font size="16.0" />
          </font>
       </Button>
