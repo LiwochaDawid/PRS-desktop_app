@@ -9,9 +9,22 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import prs.controllers.Request;
+import prs.models.VisitModel;
+import prs.models.VisitModelTable;
+import prs.util.file.Open;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 
 public class FullCalendarView {
@@ -80,48 +93,72 @@ public class FullCalendarView {
     public void populateCalendar(YearMonth yearMonth) {
         // Get the date we want to start with on the calendar
         LocalDate calendarDate = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 1);
+
+		String date;
+		if (Integer.toString(calendarDate.getMonthValue()).length() == 1) date = "010" + Integer.toString(calendarDate.getMonthValue()) + Integer.toString(calendarDate.getYear());
+		else date = "01" + Integer.toString(calendarDate.getMonthValue()) + Integer.toString(calendarDate.getYear());
+		
         // Dial back the day until it is SUNDAY (unless the month starts on a sunday)
         while (!calendarDate.getDayOfWeek().toString().equals("MONDAY") ) {
             calendarDate = calendarDate.minusDays(1);
         }
-        // Populate the calendar with day numbers
-        boolean isBeforeCurrentMonth = true;
-        boolean isAfterCurrentMonth = false;
-        for (AnchorPaneNode ap : allCalendarDays) {
-            if (ap.getChildren().size() != 0) {
-                ap.getChildren().remove(0);
-            }
-            Label x=new Label();
-            x.setText(String.valueOf(calendarDate.getDayOfMonth()));
-            x.setMaxWidth(Double.MAX_VALUE);
-            x.setAlignment(Pos.CENTER);
-            x.setFont(Font.font ("Verdana",FontWeight.BOLD, 20));
-
-            if (isBeforeCurrentMonth) {
-            	if (calendarDate.getDayOfMonth() > 1) {
-            		x.setDisable(true);
-            	}
-            	else {
-            		isBeforeCurrentMonth = false;
-            	}
-            }
-            else {
-            	if (calendarDate.getDayOfMonth() == 1) {
-            		isAfterCurrentMonth = true;
-            	}
-            	if (isAfterCurrentMonth) {
-            		x.setDisable(true);
-            	}
-            }
-            
-            ap.setDate(calendarDate);
-            AnchorPane.setTopAnchor(x, 5.0);
-            AnchorPane.setBottomAnchor(x, 5.0);
-            AnchorPane.setRightAnchor(x, 5.0);
-            AnchorPane.setLeftAnchor(x, 5.0);
-            ap.getChildren().add(x);
-            calendarDate = calendarDate.plusDays(1);
-        }
+        
+        String token;
+        
+		try {
+			token = Open.openFile();
+			Request request = new Request();
+			
+			String response = request.Get("/visit/numberOfVisitsMonth=" + date + "?", token);
+			JsonElement json = new JsonParser().parse(response);
+			JsonArray numberOfVisits = json.getAsJsonArray();
+			
+			System.out.println(numberOfVisits);
+        
+	        // Populate the calendar with day numbers
+	        boolean isBeforeCurrentMonth = true;
+	        boolean isAfterCurrentMonth = false;
+	        for (AnchorPaneNode ap : allCalendarDays) {
+	            if (ap.getChildren().size() != 0) {
+	                ap.getChildren().remove(0);
+	            }
+	            Label x=new Label();
+	            x.setText(String.valueOf(calendarDate.getDayOfMonth()));
+	            x.setMaxWidth(Double.MAX_VALUE);
+	            x.setAlignment(Pos.CENTER);
+	            x.setFont(Font.font ("Verdana",FontWeight.BOLD, 20));
+	
+	            if (isBeforeCurrentMonth) {
+	            	if (calendarDate.getDayOfMonth() > 1) {
+	            		x.setDisable(true);
+	            	}
+	            	else {
+		            	x.setText(x.getText() + " (" + numberOfVisits.get(calendarDate.getDayOfMonth()-1) + ")");
+	            		isBeforeCurrentMonth = false;
+	            	}
+	            }
+	            else {
+	            	if (calendarDate.getDayOfMonth() == 1) {
+	            		isAfterCurrentMonth = true;
+	            	}
+	            	else if (!isAfterCurrentMonth) x.setText(x.getText() + " (" + numberOfVisits.get(calendarDate.getDayOfMonth()-1) + ")");
+	            	if (isAfterCurrentMonth) {
+	            		x.setDisable(true);
+	            	}
+	            }
+	            
+	            ap.setDate(calendarDate);
+	            AnchorPane.setTopAnchor(x, 5.0);
+	            AnchorPane.setBottomAnchor(x, 5.0);
+	            AnchorPane.setRightAnchor(x, 5.0);
+	            AnchorPane.setLeftAnchor(x, 5.0);
+	            ap.getChildren().add(x);
+	            calendarDate = calendarDate.plusDays(1);
+	        }
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         // Change the title of the calendar
         calendarTitle.setText(yearMonth.getMonth().toString() + " " + String.valueOf(yearMonth.getYear()));
     }

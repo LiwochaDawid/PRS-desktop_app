@@ -25,3 +25,5 @@ nbdist/
 
 ### Eclipse ###
 bin/
+target/
+src/main/resources/session/token.txt
