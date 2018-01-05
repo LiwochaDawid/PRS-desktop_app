@@ -116,6 +116,7 @@ public class LoginController implements ILogin {
 			System.out.println("heelo null");
 		} else {
 			new Save(token, "token");
+			if(token!=null)
 			showLandingLayout();
 		}
 
