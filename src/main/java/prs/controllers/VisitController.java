@@ -125,7 +125,15 @@ public class VisitController {
 		String day="";
 		if(calendar.get(Calendar.DAY_OF_MONTH)<10)
 			day+="0"+calendar.get(Calendar.DAY_OF_MONTH);
-		String month="0"+Integer.toString(calendar.get(Calendar.MONTH)+1);
+		else
+			day=Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
+		
+		String month="";
+		if(calendar.get(Calendar.MONTH)+1<10)
+			month="0"+Integer.toString(calendar.get(Calendar.MONTH)+1);
+		else
+			month=Integer.toString(calendar.get(Calendar.MONTH)+1);
+		
 		String year=Integer.toString(calendar.get(Calendar.YEAR));
 		String date=day+month+year;
 		System.out.println(day+month+year);
@@ -143,7 +151,35 @@ public class VisitController {
 			masterData.add(visit2);
 		}
 	}
+	public VisitController(String date) {
+		GsonBuilder gSonBuilder = new GsonBuilder();
+		gSonBuilder.registerTypeAdapter(Date.class, new DateDeserializer());
+		gSonBuilder.registerTypeAdapter(Time.class, new TimeDeserializer());
+		gSonBuilder.registerTypeAdapter(Date.class, new MyDateTypeAdapter()).create();
+		Gson gson = gSonBuilder.create();
 
+		try {
+			token = Open.openFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Request request = new Request();
+		String response = request.Get("/visit/thisDoctorDate="+date+"?", token);
+		JsonElement json = new JsonParser().parse(response);
+		JsonArray array = json.getAsJsonArray();
+		Iterator iterator = array.iterator();
+		Image image = new Image("/images/delete.png");
+		
+		while (iterator.hasNext()) {
+			JsonElement json2 = (JsonElement) iterator.next();
+			VisitModel visit = gson.fromJson(json2, VisitModel.class);
+			VisitModelTable visit2 = new VisitModelTable(visit.getDate(), visit.getPatient().getName(),
+					visit.getPatient().getSurname(), visit.getPurpose().getName(), new ImageView(image));
+			masterData.add(visit2);
+		}
+	}
 	@FXML
 	void initialize() {
 		// size

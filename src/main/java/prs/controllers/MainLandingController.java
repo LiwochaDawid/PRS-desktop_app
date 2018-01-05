@@ -107,6 +107,7 @@ public class MainLandingController {
 			e.printStackTrace();
 		}
 		mainBorderPane.setCenter(pane);
+
 	}
 
 	@FXML
@@ -143,7 +144,9 @@ public class MainLandingController {
 
 		mainBorderPane.setCenter(pane);
 	}
-
+	public void setView() {
+		showVisits();
+	}
 	@FXML
 	public void initLogout() {
 		Stage stage = (Stage) mainBorderPane.getScene().getWindow();
