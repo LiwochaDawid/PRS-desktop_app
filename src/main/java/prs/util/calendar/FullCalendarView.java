@@ -1,25 +1,36 @@
 package prs.util.calendar;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import prs.controllers.MainLandingController;
 import prs.controllers.Request;
+import prs.controllers.VisitController;
 import prs.util.file.Open;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+
+import static jdk.nashorn.internal.objects.Global.println;
 
 
 public class FullCalendarView {
@@ -28,6 +39,8 @@ public class FullCalendarView {
     private VBox view;
     private Label calendarTitle;
     private YearMonth currentYearMonth;
+    private GridPane calendar;
+    private static String date = null;
     
     /**
      * Create a calendar view
@@ -36,7 +49,7 @@ public class FullCalendarView {
     public FullCalendarView(YearMonth yearMonth) {
         currentYearMonth = yearMonth;
         // Create the calendar grid pane
-        GridPane calendar = new GridPane();
+        calendar = new GridPane();
         calendar.setAlignment(Pos.CENTER);
         calendar.setMinSize(1200, 800);
         calendar.setGridLinesVisible(true);
@@ -76,6 +89,16 @@ public class FullCalendarView {
         previousMonth.setOnAction(e -> previousMonth());
         Button nextMonth = new Button(">>");
         nextMonth.setOnAction(e -> nextMonth());
+        for (Integer i = 0; i < allCalendarDays.size(); i++)
+            allCalendarDays.get(i).setOnMouseClicked(e -> {
+                    AnchorPaneNode source = (AnchorPaneNode) e.getSource();
+                    Label x = (Label) source.getChildren().get(0);
+                    String day[] = x.getText().split(" ");
+                    String date[]= calendarTitle.getText().split(" ");
+                    openVisits(day[0], date[0], date[1]);
+                    System.out.println(day[0]+" "+date[0]+" "+date[1]);
+                }
+            );
         HBox titleBar = new HBox(previousMonth, calendarTitle, nextMonth);
         titleBar.setAlignment(Pos.BASELINE_CENTER);
         // Populate calendar with the appropriate day numbers
@@ -83,6 +106,7 @@ public class FullCalendarView {
         // Create the calendar view
         view = new VBox(titleBar, dayLabels, calendar);
     }
+
 
     /**
      * Set the days of the calendar to correspond to the appropriate date
@@ -152,7 +176,7 @@ public class FullCalendarView {
 	            		x.setDisable(true);
 	            	}
 	            	else if (!isAfterCurrentMonth)
-	            		System.out.println("bb");
+	            		//System.out.println("bb");
 	            		if(numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()<=2 && !isAfterCurrentMonth)
 	            			ap.setStyle("-fx-background-color: rgba(0, 255, 80, .3);");
 	            		else if(numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()>2 && numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()<=5 && !isAfterCurrentMonth)
@@ -205,4 +229,28 @@ public class FullCalendarView {
     public void setAllCalendarDays(ArrayList<AnchorPaneNode> allCalendarDays) {
         this.allCalendarDays = allCalendarDays;
     }
+
+
+    public void openVisits(String day, String month, String year) {
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/VisitLayout.fxml"));
+        AnchorPane pane = null;
+        try {
+            pane = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        month=String.valueOf(Month.valueOf(month.toUpperCase()).getValue());
+        if (Integer.parseInt(day)<10)
+            day="0"+day;
+        if (Integer.parseInt(month)<10)
+            day="0"+month;
+        String date=day+month+year;
+        this.date=date;
+        VisitController controller = loader.getController();
+        controller = new VisitController(date);
+        view.getChildren().clear();
+        view.getChildren().add(pane);
+    }
+
+
 }

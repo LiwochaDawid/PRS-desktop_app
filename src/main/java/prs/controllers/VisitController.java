@@ -46,6 +46,7 @@ import prs.models.VisitModelTable;
 import prs.util.file.Open;
 import prs.util.parse.MyDateTypeAdapter;
 
+
 public class VisitController {
 	private String token;
 	@FXML
@@ -135,7 +136,7 @@ public class VisitController {
 			month=Integer.toString(calendar.get(Calendar.MONTH)+1);
 		
 		String year=Integer.toString(calendar.get(Calendar.YEAR));
-		String date=day+month+year;
+		String date = day + month + year;
 		System.out.println(day+month+year);
 		String response = request.Get("/visit/thisDoctorDate="+date+"?", token);
 		JsonElement json = new JsonParser().parse(response);

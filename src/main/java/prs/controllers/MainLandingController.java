@@ -67,6 +67,7 @@ public class MainLandingController {
 		final Image ICON_LOGOUT = new Image(getClass().getResourceAsStream("/images/logout_ico2.png"));
         final ImageView logoutIcon = new ImageView(ICON_LOGOUT);
 		logout.setGraphic(logoutIcon);
+		mainBorderPane.setId("#mainBorderPane");
 		//end
 		initImage();
 		showLandingLayout();
@@ -195,4 +196,7 @@ public class MainLandingController {
 		System.exit(0);
 	}
 
+	public BorderPane getMainBorderPane() {
+		return mainBorderPane;
+	}
 }
