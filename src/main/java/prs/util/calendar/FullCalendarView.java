@@ -3,7 +3,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -11,17 +10,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import prs.controllers.Request;
-import prs.models.VisitModel;
-import prs.models.VisitModelTable;
 import prs.util.file.Open;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -134,15 +128,16 @@ public class FullCalendarView {
 	
 	            if (isBeforeCurrentMonth) {
 	            	if (calendarDate.getDayOfMonth() > 1) {
+	        			ap.setStyle("-fx-background-color: rgba(0, 0, 0, .15);");
 	            		x.setDisable(true);
 	            	}
 	            	else {
 	            		if(numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()<=2 && !isAfterCurrentMonth)
-	            			ap.setStyle("-fx-background-color: rgba(0, 255, 80, .7);");
+	            			ap.setStyle("-fx-background-color: rgba(0, 255, 80, .3);");
 	            		else if(numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()>2 && numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()<=5 && !isAfterCurrentMonth)
-	            			ap.setStyle("-fx-background-color: rgba(255, 150, 0, .7);");
+	            			ap.setStyle("-fx-background-color: rgba(255, 150, 0, .3);");
 	            		else if(numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()>5  && !isAfterCurrentMonth)
-	            			ap.setStyle("-fx-background-color: rgba(255, 50, 0, .7);");
+	            			ap.setStyle("-fx-background-color: rgba(255, 50, 0, .3);");
 		            	x.setText(x.getText() + " (" + numberOfVisits.get(calendarDate.getDayOfMonth()-1) + ")"); 	
 	            		isBeforeCurrentMonth = false;
 	            	}
@@ -153,17 +148,17 @@ public class FullCalendarView {
 	            	}
 	            	
 	            	if (isAfterCurrentMonth) {
+	        			ap.setStyle("-fx-background-color: rgba(0, 0, 0, .15);");
 	            		x.setDisable(true);
 	            	}
 	            	else if (!isAfterCurrentMonth)
 	            		System.out.println("bb");
 	            		if(numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()<=2 && !isAfterCurrentMonth)
-	            			ap.setStyle("-fx-background-color: rgba(0, 255, 80, .7);");
+	            			ap.setStyle("-fx-background-color: rgba(0, 255, 80, .3);");
 	            		else if(numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()>2 && numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()<=5 && !isAfterCurrentMonth)
-	            			ap.setStyle("-fx-background-color: rgba(255, 150, 0, .7);");
+	            			ap.setStyle("-fx-background-color: rgba(255, 150, 0, .3);");
 	            		else if(numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()>5  && !isAfterCurrentMonth)
-	            			ap.setStyle("-fx-background-color: rgba(255, 50, 0, .7);");
-	            		
+	            			ap.setStyle("-fx-background-color: rgba(255, 50, 0, .3);");
 	            		x.setText(x.getText() + " (" + numberOfVisits.get(calendarDate.getDayOfMonth()-1) + ")");
 	            }
 	            
