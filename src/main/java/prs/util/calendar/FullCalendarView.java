@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -150,7 +151,8 @@ public class FullCalendarView {
 	            x.setMaxWidth(Double.MAX_VALUE);
 	            x.setAlignment(Pos.CENTER);
 	            x.setFont(Font.font ("Verdana",FontWeight.BOLD, 20));
-	
+
+	            ap.setBorder(null);
 	            if (isBeforeCurrentMonth) {
 	            	if (calendarDate.getDayOfMonth() > 1) {
 	        			ap.setStyle("-fx-background-color: rgba(0, 0, 0, .15);");
@@ -176,15 +178,17 @@ public class FullCalendarView {
 	        			ap.setStyle("-fx-background-color: rgba(0, 0, 0, .15);");
 	            		x.setDisable(true);
 	            	}
-	            	else if (!isAfterCurrentMonth)
-	            		//System.out.println("bb");
-	            		if(numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()<=2 && !isAfterCurrentMonth)
-	            			ap.setStyle("-fx-background-color: rgba(0, 255, 80, .3);");
-	            		else if(numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()>2 && numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()<=5 && !isAfterCurrentMonth)
-	            			ap.setStyle("-fx-background-color: rgba(255, 150, 0, .3);");
-	            		else if(numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()>5  && !isAfterCurrentMonth)
-	            			ap.setStyle("-fx-background-color: rgba(255, 50, 0, .3);");
+	            	else if (!isAfterCurrentMonth) {
+	            		if(numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()<=2) ap.setStyle("-fx-background-color: rgba(0, 255, 80, .3);");
+	            		else if(numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()>2 && numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()<=5) ap.setStyle("-fx-background-color: rgba(255, 150, 0, .3);");
+	            		else if(numberOfVisits.get(calendarDate.getDayOfMonth()-1).getAsInt()>5) ap.setStyle("-fx-background-color: rgba(255, 50, 0, .3);");
 	            		x.setText(x.getText() + " (" + numberOfVisits.get(calendarDate.getDayOfMonth()-1) + ")");
+	    	            Calendar cal = Calendar.getInstance();
+	    	            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+	    	            if (calendarDate.getDayOfMonth() == dayOfMonth && calendarDate.getMonthValue() == cal.get(Calendar.MONTH)+1 && calendarDate.getYear() == cal.get(Calendar.YEAR)) {
+	    		            ap.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderStroke.THICK)));
+	    	            }
+	            	}
 	            }
 	            
 	            ap.setDate(calendarDate);
