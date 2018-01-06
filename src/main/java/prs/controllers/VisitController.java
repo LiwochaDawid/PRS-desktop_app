@@ -46,6 +46,7 @@ import prs.models.VisitModelTable;
 import prs.util.file.Open;
 import prs.util.parse.MyDateTypeAdapter;
 
+import static prs.util.calendar.FullCalendarView.getDate;
 
 public class VisitController {
 	private String token;
@@ -138,6 +139,8 @@ public class VisitController {
 		String year=Integer.toString(calendar.get(Calendar.YEAR));
 		String date = day + month + year;
 		System.out.println(day+month+year);
+		if (getDate()!=null)
+			date=getDate();
 		String response = request.Get("/visit/thisDoctorDate="+date+"?", token);
 		JsonElement json = new JsonParser().parse(response);
 		JsonArray array = json.getAsJsonArray();
@@ -172,6 +175,7 @@ public class VisitController {
 		JsonArray array = json.getAsJsonArray();
 		Iterator iterator = array.iterator();
 		Image image = new Image("/images/delete.png");
+		System.out.println(date);
 		
 		while (iterator.hasNext()) {
 			JsonElement json2 = (JsonElement) iterator.next();

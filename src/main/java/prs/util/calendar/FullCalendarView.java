@@ -40,7 +40,7 @@ public class FullCalendarView {
     private Label calendarTitle;
     private YearMonth currentYearMonth;
     private GridPane calendar;
-    private static String date = null;
+    private static String date;
     
     /**
      * Create a calendar view
@@ -53,6 +53,7 @@ public class FullCalendarView {
         calendar.setAlignment(Pos.CENTER);
         calendar.setMinSize(1200, 800);
         calendar.setGridLinesVisible(true);
+        date = null;
         // Create rows and columns with anchor panes for the calendar
         
         for (int i = 0; i < 6; i++) {
@@ -234,23 +235,29 @@ public class FullCalendarView {
     public void openVisits(String day, String month, String year) {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/VisitLayout.fxml"));
         AnchorPane pane = null;
+        month=String.valueOf(Month.valueOf(month.toUpperCase()).getValue());
+        if (Integer.parseInt(day)<10)
+            day="0"+day;
+        if (Integer.parseInt(month)<10)
+            month="0"+month;
+        String date=day+month+year;
+        this.date=date;
         try {
             pane = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        month=String.valueOf(Month.valueOf(month.toUpperCase()).getValue());
-        if (Integer.parseInt(day)<10)
-            day="0"+day;
-        if (Integer.parseInt(month)<10)
-            day="0"+month;
-        String date=day+month+year;
-        this.date=date;
-        VisitController controller = loader.getController();
-        controller = new VisitController(date);
+        VisitController controller = new VisitController(date);
+        loader.setController(controller);
         view.getChildren().clear();
         view.getChildren().add(pane);
     }
 
+    public static String getDate() {
+        return date;
+    }
 
+    public static void nullifyDate(){
+        date = null;
+    }
 }
