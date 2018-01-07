@@ -27,7 +27,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Button>
-                  <Button id="btn" fx:id="visit" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showVisits" prefHeight="80.0" stylesheets="@../styles/btn.css" text="Today visits" textFill="WHITE">
+                  <Button id="btn" fx:id="visit" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showVisits" prefHeight="80.0" stylesheets="@../styles/btn.css" text="Visits" textFill="WHITE">
                      <VBox.margin>
                         <Insets bottom="20.0" />
                      </VBox.margin>
