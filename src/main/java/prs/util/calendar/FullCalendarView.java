@@ -254,7 +254,12 @@ public class FullCalendarView {
         VisitController controller = new VisitController(date);
         loader.setController(controller);
         view.getChildren().clear();
-        view.getChildren().add(pane);
+        pane.setMinSize(Region.USE_COMPUTED_SIZE,Region.USE_COMPUTED_SIZE);
+        pane.setPrefSize(1000,1000);
+        pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        view.getChildren().add(0,pane);
+        view.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        view.setPrefSize(1000,1000);
     }
 
     public static String getDate() {
