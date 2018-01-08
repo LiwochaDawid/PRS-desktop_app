@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Optional;
 
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import org.apache.http.ParseException;
 
 import com.google.gson.Gson;
@@ -26,14 +28,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
@@ -43,10 +39,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import prs.models.VisitModel;
 import prs.models.VisitModelTable;
+import prs.models.addPurposeModel;
+import prs.models.addVisitModel;
 import prs.util.file.Open;
 import prs.util.parse.MyDateTypeAdapter;
 
 import static prs.util.calendar.FullCalendarView.getDate;
+import static prs.util.calendar.FullCalendarView.nullifyDate;
 
 public class VisitController {
 	private String token;
@@ -62,6 +61,20 @@ public class VisitController {
 	private TableColumn<VisitModel, String> purpose;
 	@FXML
 	private TableColumn<VisitModelTable, ImageView> image;
+	@FXML
+    private Button addVisitButton;
+	@FXML
+    private Button confirmAddButton;
+	@FXML
+    private TextField nameField;
+    @FXML
+    private TextField surnameField;
+    @FXML
+    private TextField purposeField;
+    @FXML
+    private TextField dateField;
+	@FXML
+    private HBox addForm;
 	@FXML
 	private TextField filterField;
 	private ObservableList<VisitModelTable> masterData = FXCollections.observableArrayList();
@@ -142,6 +155,7 @@ public class VisitController {
 		if (getDate()!=null)
 			date=getDate();
 		String response = request.Get("/visit/thisDoctorDate="+date+"?", token);
+		nullifyDate();
 		JsonElement json = new JsonParser().parse(response);
 		JsonArray array = json.getAsJsonArray();
 		Iterator iterator = array.iterator();
@@ -224,4 +238,30 @@ public class VisitController {
 			//System.out.println(visitTable.getItems().get(i).get);
 		}
 	}
+
+
+	public void changeAddFormVisibility(){
+	    if (addForm.isVisible()==true){
+	        addVisitButton.setText("Add visit");
+            addForm.setVisible(false);
+            visitTable.setTranslateY(0);
+        }
+	    else {
+	        addVisitButton.setText("Close form");
+            addForm.setVisible(true);
+            visitTable.setTranslateY(35);
+
+        }
+    }
+
+    @FXML
+    void addVisit() {
+        addVisitModel addVisit = new addVisitModel(nameField.getText(), surnameField.getText(),
+                purposeField.getText(), dateField.getText());
+        Request request = new Request();
+        request.Post("/visit/add?", token, addVisit);
+        new VisitController();
+        initialize();
+    }
+
 }

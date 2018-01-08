@@ -85,6 +85,7 @@ public class Request {
 
 	public void Post(String path, String token, Object model) {
 		Url += path+token;
+		System.out.println(Url);
 		HttpPost post = new HttpPost(Url);
 		StringEntity postingString = null;
 		System.out.println(Url);

@@ -91,15 +91,15 @@ public class FullCalendarView {
         previousMonth.setOnAction(e -> previousMonth());
         Button nextMonth = new Button(">>");
         nextMonth.setOnAction(e -> nextMonth());
-        for (Integer i = 0; i < allCalendarDays.size(); i++)
-            allCalendarDays.get(i).setOnMouseClicked(e -> {
-                    AnchorPaneNode source = (AnchorPaneNode) e.getSource();
-                    Label x = (Label) source.getChildren().get(0);
-                    String day[] = x.getText().split(" ");
-                    String date[]= calendarTitle.getText().split(" ");
-                    openVisits(day[0], date[0], date[1]);
-                    System.out.println(day[0]+" "+date[0]+" "+date[1]);
-                }
+        for (AnchorPaneNode allCalendarDay : allCalendarDays)
+            allCalendarDay.setOnMouseClicked(e -> {
+                        AnchorPaneNode source = (AnchorPaneNode) e.getSource();
+                        Label x = (Label) source.getChildren().get(0);
+                        String day[] = x.getText().split(" ");
+                        String date[] = calendarTitle.getText().split(" ");
+                        openVisits(day[0], date[0], date[1]);
+                        System.out.println("constructedDATE = "+day[0] + " " + date[0] + " " + date[1]);
+                    }
             );
         HBox titleBar = new HBox(previousMonth, calendarTitle, nextMonth);
         titleBar.setAlignment(Pos.BASELINE_CENTER);
@@ -244,15 +244,13 @@ public class FullCalendarView {
             day="0"+day;
         if (Integer.parseInt(month)<10)
             month="0"+month;
-        String date=day+month+year;
-        this.date=date;
+        date=day+month+year;
+        System.out.println("Date = "+date);
         try {
             pane = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        VisitController controller = new VisitController(date);
-        loader.setController(controller);
         view.getChildren().clear();
         view.getChildren().add(pane);
     }
