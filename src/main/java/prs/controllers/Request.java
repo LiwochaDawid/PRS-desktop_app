@@ -82,7 +82,51 @@ public class Request {
 	}
 		
 
+	public void addVisit(String path, String token, String entry) {
+		Url += path+token;
+		HttpPost post = new HttpPost(Url);
+		StringEntity postingString = null;
+		System.out.println(Url);
+		try {
+			postingString = new StringEntity(entry);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		System.out.println(postingString);
+		post.setHeaders(headers);
+		post.setEntity(postingString);
 
+		HttpResponse response = null;
+		String responseString = null;
+		try {
+			response = httpClient.execute(post);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if (response.getStatusLine().getStatusCode() == 409) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Problem");
+			alert.setHeaderText("Problem, try again later");
+			alert.showAndWait();
+		} else if (response.getStatusLine().getStatusCode() == 200) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Ok");
+			alert.setHeaderText("Ok");
+			alert.setContentText("Done");
+			alert.showAndWait();
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Problem");
+			alert.setHeaderText("Try again or later or contact administrator");
+			alert.showAndWait();
+		}
+
+	}
 	public void Post(String path, String token, Object model) {
 		Url += path+token;
 		HttpPost post = new HttpPost(Url);
