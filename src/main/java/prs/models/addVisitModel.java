@@ -15,13 +15,14 @@ import java.util.Iterator;
 import java.util.Locale;
 
 public class addVisitModel {
-    private int patientID;
-    private int purposeID;
-    private String date;
+    private PatientModel patient;
+    private PurposeModel purpose;
+    private DoctorModel doctor;
+    private Timestamp date;
 
     public addVisitModel(String name, String surname, String purpose, String date){
         GsonBuilder gSonBuilder = new GsonBuilder();
-        String token;
+        String token = null;
         String TIME_FORMAT = "HH:mm:ss";
         Gson gson = gSonBuilder.create();
         Integer patientID = null;
@@ -33,8 +34,8 @@ public class addVisitModel {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        findAndSetPatient(name, surname);
-        findAndSetPurpose(purpose);
+        findAndSetPatient(name, surname, token);
+        findAndSetPurpose(purpose,token);
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             Date parsedDate = dateFormat.parse(date);
@@ -44,11 +45,9 @@ public class addVisitModel {
         setDate(timestamp);
     }
 
-    private final void findAndSetPatient(String name, String surname){
+    private final void findAndSetPatient(String name, String surname, String token){
         GsonBuilder gSonBuilder = new GsonBuilder();
         Gson gson = gSonBuilder.create();
-        String token;
-        String TIME_FORMAT = "HH:mm:ss";
         Request request = new Request();
         String response = request.Get("/patient/all?",token);
         JsonElement json = new JsonParser().parse(response);
@@ -63,11 +62,10 @@ public class addVisitModel {
         }
     }
 
-    private final void findAndSetPurpose(String name){
+    private final void findAndSetPurpose(String name, String token){
         GsonBuilder gSonBuilder = new GsonBuilder();
         gSonBuilder.registerTypeAdapter(Time.class, new addVisitModel.TimeDeserializer());
         Gson gson = gSonBuilder.create();
-        String token;
         String TIME_FORMAT = "HH:mm:ss";
         Request request = new Request();
         String response = request.Get("/purpose/doctor?",token);
@@ -83,24 +81,33 @@ public class addVisitModel {
         }
     }
 
-    public final int getPatient()
-    {
-        return patientID;
+    private final void findAndSetDoctor(String token){
+        GsonBuilder gSonBuilder = new GsonBuilder();
+        Gson gson = gSonBuilder.create();
+        Request request = new Request();
+        String response = request.Get("/doctor/this?",token);
+        JsonElement json = new JsonParser().parse(response);
+        setDoctor(gson.fromJson(json, DoctorModel.class));
     }
 
-    public final String getDate()
+    public final PatientModel getPatient()
+    {
+        return patient;
+    }
+
+    public final Timestamp getDate()
     {
         return date;
     }
 
-    public final int getPurpose()
+    public final PurposeModel getPurpose()
     {
-        return purposeID;
+        return purpose;
     }
 
     public final void setPatient(PatientModel patient)
     {
-        this.patientID=patient.getPatientID();
+        this.patient=patient;
     }
 
     public final void setDate(Timestamp date)
@@ -113,11 +120,16 @@ public class addVisitModel {
         this.purpose=purpose;
     }
 
+    public void setDoctor(DoctorModel doctor) {
+        this.doctor = doctor;
+    }
+
 
     private class TimeDeserializer implements JsonDeserializer<Time> {
         @Override
         public Time deserialize(JsonElement jsonElement, Type typeOF, JsonDeserializationContext context)
                 throws JsonParseException {
+            String TIME_FORMAT = "HH:mm:ss";
             try {
 
                 String s = jsonElement.getAsString();

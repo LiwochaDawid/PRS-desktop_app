@@ -5,11 +5,7 @@ import java.lang.reflect.Type;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 import org.apache.http.ParseException;
 
@@ -22,16 +18,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
@@ -39,22 +31,13 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.util.Callback;
-import prs.models.DoctorModel;
-import prs.models.PatientModel;
-import prs.models.PatientTableViewModel;
-import prs.models.PurposeModel;
-import prs.models.VisitModel;
-import prs.models.VisitModel2;
-import prs.models.VisitModelTable;
-import prs.models.addPurposeModel;
+import prs.models.*;
 import prs.util.file.Open;
 import prs.util.parse.MyDateTypeAdapter;
+import prs.util.parse.MySqlDateTypeAdapter;
+
 
 import static prs.util.calendar.FullCalendarView.getDate;
 
@@ -64,6 +47,8 @@ public class VisitController {
 	private int purposeCount;
 	@FXML
 	private TableView<VisitModelTable> visitTable;
+	@FXML
+	private ComboBox<String> time;
 	@FXML
 	private TableColumn<VisitModelTable, Date> date;
 	@FXML
@@ -83,11 +68,13 @@ public class VisitController {
 	private ObservableList<PurposeModel> purposeData = FXCollections.observableArrayList();
 	Request request = new Request();
 	private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+	private static final String SQLDATE_FORMAT = "yyyy-MM-dd";
 	private static final String TIME_FORMAT = "HH:mm:ss";
 	@FXML
 	private ComboBox<String> patientList;
 	@FXML
 	private DatePicker dateVisit;
+	private ConfigurationModel configuration;
 	
 	private class DateDeserializer implements JsonDeserializer<Date> {
 		@Override
@@ -95,6 +82,21 @@ public class VisitController {
 				throws JsonParseException {
 			try {
 				return new SimpleDateFormat(DATE_FORMAT, Locale.US).parse(jsonElement.getAsString());
+			} catch (java.text.ParseException e) {
+			}
+
+			throw new JsonParseException(
+					"Unparseable date: \"" + jsonElement.getAsString() + "\". Supported formats: " + DATE_FORMAT);
+		}
+	}
+
+	private class SqlDateDeserializer implements JsonDeserializer<java.sql.Date> {
+		@Override
+		public java.sql.Date deserialize(JsonElement jsonElement, Type typeOF, JsonDeserializationContext context)
+				throws JsonParseException {
+			try {
+				Date parsed=new SimpleDateFormat(SQLDATE_FORMAT, Locale.US).parse(jsonElement.getAsString());
+				return new java.sql.Date(parsed.getTime());
 			} catch (java.text.ParseException e) {
 			}
 
@@ -206,14 +208,12 @@ public class VisitController {
 		gSonBuilder.registerTypeAdapter(Time.class, new TimeDeserializer());
 		gSonBuilder.registerTypeAdapter(Date.class, new MyDateTypeAdapter()).create();
 		Gson gson = gSonBuilder.create();
-
 		try {
 			token = Open.openFile();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		Request request = new Request();
 		String response=request.Get("/patient/all?", token);
 		JsonElement json = new JsonParser().parse(response);    
@@ -233,14 +233,15 @@ public class VisitController {
 		System.out.println(date);
 		
 		while (iterator2.hasNext()) {
-			JsonElement json3 = (JsonElement) iterator2.next();
-			VisitModel visit = gson.fromJson(json3, VisitModel.class);
+			JsonElement json1 = (JsonElement) iterator2.next();
+			VisitModel visit = gson.fromJson(json1, VisitModel.class);
+			System.out.println(visit.getDate());
 			VisitModelTable visit2 = new VisitModelTable(visit.getDate(), visit.getPatient().getName(),
 					visit.getPatient().getSurname(), visit.getPurpose().getName(), new ImageView(image));
 			masterData.add(visit2);
 		}
-		
 	}
+
 	@FXML
 	void initialize() {
 		for (int i=0; i<patientCount; i++) {
@@ -266,7 +267,8 @@ public class VisitController {
 		image.setCellValueFactory(new PropertyValueFactory<>("image"));
 		
 		visitTable.setItems(masterData);
-		
+		setWorkTime();
+		populateTimeBox();
 	}
 	@FXML
 	public void deleteVisit() {
@@ -305,7 +307,7 @@ public class VisitController {
 		Gson gson = gSonBuilder.create();
 		DoctorModel doctor = gson.fromJson(json, DoctorModel.class);	
 		if(!id[0].isEmpty()) {
-			Timestamp timestamp = Timestamp.valueOf(dateVisit.getValue().toString()+" 00:00:00");		
+			Timestamp timestamp = Timestamp.valueOf(dateVisit.getValue().toString()+" "+ time.getValue()+":00");
 			int idPatient=Integer.parseInt(id[0]);
 			
 			String entry="{ \"date\":"+timestamp.getTime()+", \"comment\": \""+comment.getText()+"\", "
@@ -315,6 +317,44 @@ public class VisitController {
 			
 			requesT.addVisit("/visit/addAsDoctor?", token, entry);
 		}
+	}
+
+	private void populateTimeBox(){
+		Integer hour;
+		Integer min;
+		Integer interval = 30;
+		String stringTime;
+		Time startTime;
+		Time endTime;
+		ObservableList<String> oTimes = FXCollections.observableArrayList();
+		for (hour = 0; hour < 24; hour++) {
+			for (min = 0; min < 60; min += interval) {
+				if (hour<10&&min<10)
+					stringTime = "0"+hour.toString() + ":0" + min.toString();
+				else if (min<10)
+					stringTime = hour.toString() + ":0" + min.toString();
+				else if (hour<10)
+					stringTime = "0"+hour.toString() +":"+  min.toString();
+				else
+					stringTime = hour.toString() +":"+  min.toString();
+				oTimes.add(stringTime);
+			}
+		}
+		System.out.println(oTimes.get(4));
+		time.setItems(oTimes);
+	}
+
+	private void setWorkTime(){
+		GsonBuilder gSonBuilder = new GsonBuilder();
+		gSonBuilder.registerTypeAdapter(Date.class, new SqlDateDeserializer());
+		gSonBuilder.registerTypeAdapter(Time.class, new TimeDeserializer());
+		gSonBuilder.registerTypeAdapter(Date.class, new MySqlDateTypeAdapter()).create();
+		Gson gson = gSonBuilder.create();
+		Request request = new Request();
+		String response = request.Get("/configuration/doctor?", token);
+		JsonElement json = new JsonParser().parse(response);
+		configuration = gson.fromJson(json, ConfigurationModel.class);
+
 	}
 
 }

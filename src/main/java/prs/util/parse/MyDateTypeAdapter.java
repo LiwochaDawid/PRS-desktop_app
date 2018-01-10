@@ -23,5 +23,5 @@ public class MyDateTypeAdapter extends TypeAdapter<Date>{
 	        else
 	            return null;
 	    }
-	
+
 }
