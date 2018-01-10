@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="315.0" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="prs.controllers.VisitController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="315.0" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="prs.controllers.VisitController">
   <children>
-    <TableView fx:id="visitTable" editable="true" prefWidth="980.0" stylesheets="@../styles/patientTable.css" tableMenuButtonVisible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+    <TableView fx:id="visitTable" editable="true" prefHeight="-1.0" prefWidth="-1.0" stylesheets="@../styles/patientTable.css" tableMenuButtonVisible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
       <columns>
         <TableColumn fx:id="date" maxWidth="5000.0" minWidth="10.0" prefWidth="182.0" text="Date" />
         <TableColumn fx:id="name" maxWidth="5000.0" minWidth="10.0" prefWidth="192.0" text="Name" />
@@ -23,66 +20,14 @@
             <TableColumn fx:id="image" onEditStart="#deleteVisit" prefWidth="75.0" />
       </columns>
     </TableView>
-      <VBox layoutX="10.0" layoutY="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-         <children>
-          <HBox id="HBox" spacing="5.0">
-            <children>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/searchicon.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets bottom="5.0" right="3.0" />
-                     </HBox.margin>
-                  </ImageView>
-              <TextField fx:id="filterField" alignment="TOP_LEFT" maxWidth="-Infinity" prefHeight="25.0" prefWidth="300.0" promptText="Search" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets bottom="5.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font name="Arial Black" size="14.0" />
-                     </font>
-                  </TextField>
-                  <Button fx:id="addVisitButton" maxHeight="30.0" mnemonicParsing="false" onAction="#changeAddFormVisibility" prefHeight="30.0" style="-fx-alignment: center; -fx-border-color: black; -fx-border-radius: 4;" stylesheets="@../styles/btn.css" text="Add visit" textAlignment="CENTER">
-                     <font>
-                        <Font name="Arial Black" size="14.0" />
-                     </font>
-                  </Button>
-            </children>
-          </HBox>
-            <HBox id="HBox" fx:id="addForm" focusTraversable="true" spacing="5.0" visible="false">
-               <children>
-                  <TextField fx:id="nameField" promptText="Name" style="-fx-background-color: white;">
-                     <font>
-                        <Font name="Arial Black" size="14.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="surnameField" promptText="Surname">
-                     <font>
-                        <Font name="Arial Black" size="14.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="purposeField" promptText="Purpose">
-                     <font>
-                        <Font name="Arial Black" size="14.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="dateField" maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="250.0" promptText="Date yyyy-MM-dd HH:MM:SS">
-                     <font>
-                        <Font name="Arial Black" size="14.0" />
-                     </font>
-                  </TextField>
-                  <Button fx:id="confirmAddButton" alignment="CENTER" maxHeight="30.0" mnemonicParsing="false" onAction="#addVisit" prefHeight="30.0" prefWidth="75.0" style="-fx-alignment: center; -fx-border-color: black; -fx-border-radius: 4;" stylesheets="@../styles/btn.css" text="Add" textAlignment="CENTER">
-                     <font>
-                        <Font name="Arial Black" size="14.0" />
-                     </font>
-                  </Button>
-               </children>
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </HBox>
-         </children>
-      </VBox>
+    <HBox id="HBox" spacing="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <children>
+            <ComboBox fx:id="patientList" prefHeight="31.0" prefWidth="150.0" promptText="Patient" />
+            <DatePicker fx:id="dateVisit" prefHeight="30.0" prefWidth="174.0" promptText="Choose date" />
+            <TextField fx:id="comment" prefHeight="30.0" prefWidth="272.0" promptText="Comment" />
+            <ComboBox fx:id="purposeList" prefHeight="30.0" prefWidth="150.0" promptText="Purpose" />
+            <Button mnemonicParsing="false" onAction="#addVisit" style="-fx-background-color: grey; -fx-font-size: 14; -fx-text-fill: white;" stylesheets="@../styles/btn_settings.css" text="Add visit" />
+      </children>
+    </HBox>
   </children>
 </AnchorPane>

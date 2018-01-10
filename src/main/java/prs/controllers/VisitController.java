@@ -3,6 +3,7 @@ package prs.controllers;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,8 +11,6 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Optional;
 
-import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import org.apache.http.ParseException;
 
 import com.google.gson.Gson;
@@ -23,13 +22,22 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
@@ -37,18 +45,23 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
+import prs.models.DoctorModel;
+import prs.models.PatientModel;
+import prs.models.PatientTableViewModel;
+import prs.models.PurposeModel;
 import prs.models.VisitModel;
+import prs.models.VisitModel2;
 import prs.models.VisitModelTable;
 import prs.models.addPurposeModel;
-import prs.models.addVisitModel;
 import prs.util.file.Open;
 import prs.util.parse.MyDateTypeAdapter;
 
 import static prs.util.calendar.FullCalendarView.getDate;
-import static prs.util.calendar.FullCalendarView.nullifyDate;
 
 public class VisitController {
 	private String token;
+	private int patientCount;
+	private int purposeCount;
 	@FXML
 	private TableView<VisitModelTable> visitTable;
 	@FXML
@@ -61,27 +74,21 @@ public class VisitController {
 	private TableColumn<VisitModel, String> purpose;
 	@FXML
 	private TableColumn<VisitModelTable, ImageView> image;
+	@FXML 
+	private TextField comment;
 	@FXML
-    private Button addVisitButton;
-	@FXML
-    private Button confirmAddButton;
-	@FXML
-    private TextField nameField;
-    @FXML
-    private TextField surnameField;
-    @FXML
-    private TextField purposeField;
-    @FXML
-    private TextField dateField;
-	@FXML
-    private HBox addForm;
-	@FXML
-	private TextField filterField;
+	private ComboBox<String> purposeList;
 	private ObservableList<VisitModelTable> masterData = FXCollections.observableArrayList();
+	private ObservableList<PatientTableViewModel> patientData = FXCollections.observableArrayList();
+	private ObservableList<PurposeModel> purposeData = FXCollections.observableArrayList();
 	Request request = new Request();
 	private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 	private static final String TIME_FORMAT = "HH:mm:ss";
-
+	@FXML
+	private ComboBox<String> patientList;
+	@FXML
+	private DatePicker dateVisit;
+	
 	private class DateDeserializer implements JsonDeserializer<Date> {
 		@Override
 		public Date deserialize(JsonElement jsonElement, Type typeOF, JsonDeserializationContext context)
@@ -127,7 +134,7 @@ public class VisitController {
 		gSonBuilder.registerTypeAdapter(Time.class, new TimeDeserializer());
 		gSonBuilder.registerTypeAdapter(Date.class, new MyDateTypeAdapter()).create();
 		Gson gson = gSonBuilder.create();
-
+		patientData.clear();
 		try {
 			token = Open.openFile();
 		} catch (IOException e) {
@@ -154,19 +161,43 @@ public class VisitController {
 		System.out.println(day+month+year);
 		if (getDate()!=null)
 			date=getDate();
-		String response = request.Get("/visit/thisDoctorDate="+date+"?", token);
-		nullifyDate();
-		JsonElement json = new JsonParser().parse(response);
-		JsonArray array = json.getAsJsonArray();
-		Iterator iterator = array.iterator();
+		
+		
+		String response=request.Get("/patient/all?", token);
+		JsonElement json = new JsonParser().parse(response);    
+		JsonArray array= json.getAsJsonArray();    
+		Iterator iterator = array.iterator();   
+		while(iterator.hasNext()){
+		    JsonElement json2 = (JsonElement)iterator.next();
+		    PatientTableViewModel patient = gson.fromJson(json2, PatientTableViewModel.class);
+		    patientData.add(patient);
+		    patientCount++;
+		}
+		Request request2 = new Request();
+		String response2 = request2.Get("/visit/thisDoctorDate="+date+"?", token);
+		JsonElement json2 = new JsonParser().parse(response2);
+		JsonArray array2 = json2.getAsJsonArray();
+		Iterator iterator2 = array2.iterator();
 		Image image = new Image("/images/delete.png");
 		
-		while (iterator.hasNext()) {
-			JsonElement json2 = (JsonElement) iterator.next();
-			VisitModel visit = gson.fromJson(json2, VisitModel.class);
+		while (iterator2.hasNext()) {
+			JsonElement json3 = (JsonElement) iterator2.next();
+			VisitModel visit = gson.fromJson(json3, VisitModel.class);
 			VisitModelTable visit2 = new VisitModelTable(visit.getDate(), visit.getPatient().getName(),
 					visit.getPatient().getSurname(), visit.getPurpose().getName(), new ImageView(image));
 			masterData.add(visit2);
+		}
+		Request request3 = new Request();
+		String response3 = request3.Get("/purpose/doctor?", token);
+		JsonElement json3 = new JsonParser().parse(response3);
+		JsonArray array3 = json3.getAsJsonArray();
+		Iterator iterator3 = array3.iterator();
+		while (iterator3.hasNext()) {
+			JsonElement json4 = (JsonElement) iterator3.next();
+			PurposeModel purpose = gson.fromJson(json4, PurposeModel.class);
+			purposeData.add(purpose);
+			System.out.println(purpose.getDescription());
+			purposeCount++;
 		}
 	}
 	public VisitController(String date) {
@@ -184,24 +215,43 @@ public class VisitController {
 		}
 		
 		Request request = new Request();
-		String response = request.Get("/visit/thisDoctorDate="+date+"?", token);
-		JsonElement json = new JsonParser().parse(response);
-		JsonArray array = json.getAsJsonArray();
-		Iterator iterator = array.iterator();
+		String response=request.Get("/patient/all?", token);
+		JsonElement json = new JsonParser().parse(response);    
+		JsonArray array= json.getAsJsonArray();    
+		Iterator iterator = array.iterator();   
+		while(iterator.hasNext()){
+		    JsonElement json2 = (JsonElement)iterator.next();
+		    PatientTableViewModel patient = gson.fromJson(json2, PatientTableViewModel.class);
+		    patientData.add(patient);
+		}
+		Request request2 = new Request();
+		String response2 = request2.Get("/visit/thisDoctorDate="+date+"?", token);
+		JsonElement json2 = new JsonParser().parse(response2);
+		JsonArray array2 = json2.getAsJsonArray();
+		Iterator iterator2 = array2.iterator();
 		Image image = new Image("/images/delete.png");
 		System.out.println(date);
 		
-		while (iterator.hasNext()) {
-			JsonElement json2 = (JsonElement) iterator.next();
-			VisitModel visit = gson.fromJson(json2, VisitModel.class);
+		while (iterator2.hasNext()) {
+			JsonElement json3 = (JsonElement) iterator2.next();
+			VisitModel visit = gson.fromJson(json3, VisitModel.class);
 			VisitModelTable visit2 = new VisitModelTable(visit.getDate(), visit.getPatient().getName(),
 					visit.getPatient().getSurname(), visit.getPurpose().getName(), new ImageView(image));
 			masterData.add(visit2);
 		}
+		
 	}
 	@FXML
 	void initialize() {
-		// size
+		for (int i=0; i<patientCount; i++) {
+		patientList.getItems().add(patientData.get(i).getPatientID()+", "+patientData.get(i).getName()+" "+patientData.get(i).getSurname());
+		}
+		patientList.setValue(patientList.getItems().get(0));
+		for (int i=0; i<purposeCount; i++) {
+		purposeList.getItems().add(purposeData.get(i).getPurposeID()+", "+purposeData.get(i).getName());
+		}
+		purposeList.setValue(purposeList.getItems().get(0));
+		
 		visitTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		date.setMaxWidth(1f * Integer.MAX_VALUE * 30); // 10% width
 		name.setMaxWidth(1f * Integer.MAX_VALUE * 20); // 10% width
@@ -214,6 +264,7 @@ public class VisitController {
 		surname.setCellValueFactory(new PropertyValueFactory<>("surname"));
 		purpose.setCellValueFactory(new PropertyValueFactory<>("purpose"));
 		image.setCellValueFactory(new PropertyValueFactory<>("image"));
+		
 		visitTable.setItems(masterData);
 		
 	}
@@ -234,34 +285,36 @@ public class VisitController {
 			// DELETE
 		} else if (result.get() == buttonTypeTwo) {
 			alert.close();
-			
-			//System.out.println(visitTable.getItems().get(i).get);
 		}
 	}
-
-
-	public void changeAddFormVisibility(){
-	    if (addForm.isVisible()==true){
-	        addVisitButton.setText("Add visit");
-            addForm.setVisible(false);
-            visitTable.setTranslateY(0);
-        }
-	    else {
-	        addVisitButton.setText("Close form");
-            addForm.setVisible(true);
-            visitTable.setTranslateY(35);
-
-        }
-    }
-
-    @FXML
-    void addVisit() {
-        addVisitModel addVisit = new addVisitModel(nameField.getText(), surnameField.getText(),
-                purposeField.getText(), dateField.getText());
-        Request request = new Request();
-        request.Post("/visit/add?", token, addVisit);
-        new VisitController();
-        initialize();
-    }
+	
+	@FXML
+	public void addVisit() {
+		String pt=patientList.getValue();
+		System.out.println(pt);
+		String id[]=pt.split(",");
+		String puValue=purposeList.getValue();
+		String idPurp[]=puValue.split(",");
+		Request request = new Request();
+		String response=request.Get("/doctor/this?", token);
+		JsonElement json = new JsonParser().parse(response);    
+		GsonBuilder gSonBuilder = new GsonBuilder();
+		gSonBuilder.registerTypeAdapter(Date.class, new DateDeserializer());
+		gSonBuilder.registerTypeAdapter(Time.class, new TimeDeserializer());
+		gSonBuilder.registerTypeAdapter(Date.class, new MyDateTypeAdapter()).create();
+		Gson gson = gSonBuilder.create();
+		DoctorModel doctor = gson.fromJson(json, DoctorModel.class);	
+		if(!id[0].isEmpty()) {
+			Timestamp timestamp = Timestamp.valueOf(dateVisit.getValue().toString()+" 00:00:00");		
+			int idPatient=Integer.parseInt(id[0]);
+			
+			String entry="{ \"date\":"+timestamp.getTime()+", \"comment\": \""+comment.getText()+"\", "
+					+ "\"patient\": { \"patientID\":"+idPatient+"}, \"purpose\": { \"purposeID\": "+idPurp[0]+"}  }";
+			System.out.println(entry);
+			Request requesT = new Request();
+			
+			requesT.addVisit("/visit/addAsDoctor?", token, entry);
+		}
+	}
 
 }
