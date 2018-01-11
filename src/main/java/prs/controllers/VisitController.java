@@ -268,7 +268,7 @@ public class VisitController {
 		
 		visitTable.setItems(masterData);
 		setWorkTime();
-		populateTimeBox();
+//		populateTimeBox();
 	}
 	@FXML
 	public void deleteVisit() {
@@ -319,28 +319,86 @@ public class VisitController {
 		}
 	}
 
-	private void populateTimeBox(){
+	private int hourParse(Time time){
+		Long hour = time.getTime()/1000/60/60;
+		return hour.intValue()+1;
+	}
+
+	private int minParse(Time time){
+		Long min = time.getTime()/1000/60;
+		while (min > 59)
+			min-=60;
+		return min.intValue();
+	}
+
+	public void populateTimeBox(){
 		Integer hour;
 		Integer min;
 		Integer interval = 30;
-		String stringTime;
-		Time startTime;
-		Time endTime;
 		ObservableList<String> oTimes = FXCollections.observableArrayList();
-		for (hour = 0; hour < 24; hour++) {
-			for (min = 0; min < 60; min += interval) {
-				if (hour<10&&min<10)
-					stringTime = "0"+hour.toString() + ":0" + min.toString();
-				else if (min<10)
-					stringTime = hour.toString() + ":0" + min.toString();
-				else if (hour<10)
-					stringTime = "0"+hour.toString() +":"+  min.toString();
-				else
-					stringTime = hour.toString() +":"+  min.toString();
-				oTimes.add(stringTime);
+		String stringTime = null;
+		Time startTime = new Time(0);
+		Time endTime = new Time(0);
+		if (dateVisit.getValue()!=null){
+			switch (dateVisit.getValue().getDayOfWeek()) {
+				case MONDAY: {
+					startTime = configuration.getMoWorkStart();
+					endTime = configuration.getMoWorkEnd();
+					break;
+				}
+				case WEDNESDAY: {
+					startTime = configuration.getWeWorkStart();
+					endTime = configuration.getWeWorkEnd();
+					break;
+				}
+				case TUESDAY: {
+					startTime = configuration.getTuWorkStart();
+					endTime = configuration.getTuWorkEnd();
+					break;
+				}
+				case THURSDAY: {
+					startTime = configuration.getThWorkStart();
+					endTime = configuration.getThWorkEnd();
+					break;
+				}
+				case FRIDAY: {
+					startTime = configuration.getFrWorkStart();
+					endTime = configuration.getFrWorkEnd();
+					break;
+				}
+				case SATURDAY: {
+					startTime = configuration.getSaWorkStart();
+					endTime = configuration.getSaWorkEnd();
+					break;
+				}
+				case SUNDAY: {
+					startTime = configuration.getSuWorkStart();
+					endTime = configuration.getSuWorkEnd();
+					break;
+				}
+				default: {
+					startTime.setTime(0);
+					startTime.setTime(0);
+				}
+			}
+			System.out.println("Time starts: "+hourParse(startTime)+":"+minParse(startTime)+" Time ends: "+hourParse(endTime)+":"+minParse(endTime));
+			for (hour = hourParse(startTime); hour <= hourParse(endTime); hour++) {
+				for (min = minParse(startTime); min < 60; min += interval) {
+					System.out.println("Hour added: "+hour+":"+min);
+					if (hour == hourParse(endTime) && min >= minParse(endTime))
+						break;
+						else if (hour < 10 && min < 10)
+							stringTime = "0" + hour.toString() + ":0" + min.toString();
+						else if (min < 10)
+							stringTime = hour.toString() + ":0" + min.toString();
+						else if (hour < 10)
+							stringTime = "0" + hour.toString() + ":" + min.toString();
+						else
+							stringTime = hour.toString() + ":" + min.toString();
+						oTimes.add(stringTime);
+				}
 			}
 		}
-		System.out.println(oTimes.get(4));
 		time.setItems(oTimes);
 	}
 
