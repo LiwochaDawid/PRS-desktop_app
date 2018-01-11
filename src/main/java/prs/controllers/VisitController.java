@@ -28,6 +28,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -46,6 +47,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import prs.models.DoctorModel;
 import prs.models.PatientModel;
@@ -65,19 +68,21 @@ public class VisitController {
 	private int patientCount;
 	private int purposeCount;
 	@FXML
-	private TableView<VisitModelTable> visitTable;
+	private AnchorPane anchorPane;
 	@FXML
-	private TableColumn<VisitModelTable, Integer> id;
+	public TableView<VisitModelTable> visitTable;
+	@FXML
+	public TableColumn<VisitModelTable, Integer> id;
 	@FXML 
-	private TableColumn<VisitModelTable, Date> date;
+	public TableColumn<VisitModelTable, Date> date;
 	@FXML
-	private TableColumn<VisitModelTable, String> name;
+	public TableColumn<VisitModelTable, String> name;
 	@FXML
-	private TableColumn<VisitModelTable, String> surname;
+	public TableColumn<VisitModelTable, String> surname;
 	@FXML
-	private TableColumn<VisitModel, String> purpose;
+	public TableColumn<VisitModel, String> purpose;
 	@FXML
-	private TableColumn<VisitModelTable, ImageView> image;
+	public TableColumn<VisitModelTable, ImageView> image;
 	@FXML 
 	private TextField comment;
 	@FXML
@@ -294,7 +299,7 @@ public class VisitController {
 			int id=visitTable.getSelectionModel().getSelectedItem().getId();
 			Request delete=new Request();
 			delete.deleteVisit("/visit/deleteAsDoctorVisitID=", token, id);
-			
+			updateView();
 		} else if (result.get() == buttonTypeTwo) {
 			alert.close();
 		}
@@ -328,5 +333,27 @@ public class VisitController {
 			requesT.addVisit("/visit/addAsDoctor?", token, entry);
 		}
 	}
-
+	
+	public void updateView() {
+		FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/VisitLayout.fxml"));
+		AnchorPane pane = null;
+	
+		try {
+			pane = loader.load();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		pane.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
+		pane.setPrefSize(1000, 800);
+		//pane.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+		
+		VisitController visit=new VisitController();
+		loader.setController(visit);
+		
+		VBox bp=(VBox)anchorPane.getParent();
+		bp.setPrefSize(1000,800);
+		bp.getChildren().clear();
+		bp.getChildren().add(pane);
+		
+	}
 }

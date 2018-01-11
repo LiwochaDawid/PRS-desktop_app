@@ -149,6 +149,7 @@ public class FullCalendarView {
 	            Label x=new Label();
 	            x.setText(String.valueOf(calendarDate.getDayOfMonth()));
 	            x.setMaxWidth(Double.MAX_VALUE);
+	            x.setMaxHeight(Double.MAX_VALUE);
 	            x.setAlignment(Pos.CENTER);
 	            x.setFont(Font.font ("Verdana",FontWeight.BOLD, 20));
 
