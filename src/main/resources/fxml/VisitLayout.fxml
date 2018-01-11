@@ -13,6 +13,7 @@
   <children>
     <TableView fx:id="visitTable" editable="true" prefHeight="-1.0" prefWidth="-1.0" stylesheets="@../styles/patientTable.css" tableMenuButtonVisible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
       <columns>
+            <TableColumn fx:id="id" prefWidth="75.0" text="Id" />
         <TableColumn fx:id="date" maxWidth="5000.0" minWidth="10.0" prefWidth="182.0" text="Date" />
         <TableColumn fx:id="name" maxWidth="5000.0" minWidth="10.0" prefWidth="192.0" text="Name" />
             <TableColumn fx:id="surname" prefWidth="75.0" text="Surname" />
