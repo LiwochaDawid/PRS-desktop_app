@@ -6,13 +6,15 @@ import java.util.Date;
 import javafx.scene.image.ImageView;
 
 public class VisitModelTable {
+	private int id;
 	private Date date;
 	private String name;
 	private String surname;
 	private String purpose;
 	private ImageView image;
 	
-	public VisitModelTable(Date date, String name, String surname, String purpose,ImageView image) {
+	public VisitModelTable(int id, Date date, String name, String surname, String purpose,ImageView image) {
+		this.id=id;
 		this.date=date;
 		this.name=name;
 		this.surname=surname;
@@ -58,5 +60,13 @@ public class VisitModelTable {
 
 	public void setImage(ImageView image) {
 		this.image = image;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

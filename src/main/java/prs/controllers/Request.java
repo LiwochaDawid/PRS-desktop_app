@@ -174,6 +174,55 @@ public class Request {
 		}
 
 	}
+	public void deleteVisit(String trace, String token, int id)
+	{
+		Url += trace+id+"?"+token;
+		HttpPost post = new HttpPost(Url);
+		StringEntity postingString = null;
+		post.setHeaders(headers);
+		HttpResponse response = null;
+		String responseString = null;
+		try {
+			response = httpClient.execute(post);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(Url);
+		if (response.getStatusLine().getStatusCode() == 403) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Delete visit");
+			alert.setHeaderText("Problem with delete visit id: "+id);
+			alert.setContentText(
+					"Can't delete visit, Forbidden");
+			alert.showAndWait();
+		} else if (response.getStatusLine().getStatusCode() == 401) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Delete visit");
+			alert.setHeaderText("Delete visit");
+			alert.setContentText("You are unathorized to delete visit id: " + id);
+			alert.showAndWait();
+		} else if (response.getStatusLine().getStatusCode()==200){
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Delete visit");
+			alert.setHeaderText("Delete visit"); 
+			alert.setContentText("Visit id: "+id+" deleted");
+			alert.showAndWait();
+		}
+		else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Delete visit");
+			alert.setHeaderText("Problem 2 with delete visit id: "+id);
+			alert.setContentText(
+					"Can't delete visit");
+			alert.showAndWait();
+		}
+	
+
+	}
 	public void createDoctorAccount(String trace, AccountModel account, SignUpModel doctor) {
 		Url += trace;
 		HttpPost post = new HttpPost(Url);

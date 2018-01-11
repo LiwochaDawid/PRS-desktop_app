@@ -5,6 +5,12 @@ import java.lang.reflect.Type;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.*;
 
 import org.apache.http.ParseException;
@@ -18,10 +24,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -29,11 +39,27 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import prs.models.*;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.util.Callback;
+import prs.models.DoctorModel;
+import prs.models.PatientModel;
+import prs.models.PatientTableViewModel;
+import prs.models.PurposeModel;
+import prs.models.VisitModel;
+import prs.models.VisitModel2;
+import prs.models.VisitModelTable;
+import prs.models.addPurposeModel;
 import prs.util.file.Open;
 import prs.util.parse.MyDateTypeAdapter;
 import prs.util.parse.MySqlDateTypeAdapter;
@@ -49,16 +75,21 @@ public class VisitController {
 	private TableView<VisitModelTable> visitTable;
 	@FXML
 	private ComboBox<String> time;
+	private AnchorPane anchorPane;
 	@FXML
-	private TableColumn<VisitModelTable, Date> date;
+	public TableView<VisitModelTable> visitTable;
 	@FXML
-	private TableColumn<VisitModelTable, String> name;
+	public TableColumn<VisitModelTable, Integer> id;
 	@FXML
-	private TableColumn<VisitModelTable, String> surname;
+	public TableColumn<VisitModelTable, Date> date;
 	@FXML
-	private TableColumn<VisitModel, String> purpose;
+	public TableColumn<VisitModelTable, String> name;
 	@FXML
-	private TableColumn<VisitModelTable, ImageView> image;
+	public TableColumn<VisitModelTable, String> surname;
+	@FXML
+	public TableColumn<VisitModel, String> purpose;
+	@FXML
+	public TableColumn<VisitModelTable, ImageView> image;
 	@FXML 
 	private TextField comment;
 	@FXML
@@ -74,8 +105,9 @@ public class VisitController {
 	private ComboBox<String> patientList;
 	@FXML
 	private DatePicker dateVisit;
+	private String visitDate=null;
 	private ConfigurationModel configuration;
-	
+
 	private class DateDeserializer implements JsonDeserializer<Date> {
 		@Override
 		public Date deserialize(JsonElement jsonElement, Type typeOF, JsonDeserializationContext context)
@@ -136,7 +168,6 @@ public class VisitController {
 		gSonBuilder.registerTypeAdapter(Time.class, new TimeDeserializer());
 		gSonBuilder.registerTypeAdapter(Date.class, new MyDateTypeAdapter()).create();
 		Gson gson = gSonBuilder.create();
-		patientData.clear();
 		try {
 			token = Open.openFile();
 		} catch (IOException e) {
@@ -185,7 +216,7 @@ public class VisitController {
 		while (iterator2.hasNext()) {
 			JsonElement json3 = (JsonElement) iterator2.next();
 			VisitModel visit = gson.fromJson(json3, VisitModel.class);
-			VisitModelTable visit2 = new VisitModelTable(visit.getDate(), visit.getPatient().getName(),
+			VisitModelTable visit2 = new VisitModelTable(visit.getVisitID(), visit.getDate(), visit.getPatient().getName(),
 					visit.getPatient().getSurname(), visit.getPurpose().getName(), new ImageView(image));
 			masterData.add(visit2);
 		}
@@ -203,6 +234,7 @@ public class VisitController {
 		}
 	}
 	public VisitController(String date) {
+		this.visitDate=date;
 		GsonBuilder gSonBuilder = new GsonBuilder();
 		gSonBuilder.registerTypeAdapter(Date.class, new DateDeserializer());
 		gSonBuilder.registerTypeAdapter(Time.class, new TimeDeserializer());
@@ -233,10 +265,10 @@ public class VisitController {
 		System.out.println(date);
 		
 		while (iterator2.hasNext()) {
-			JsonElement json1 = (JsonElement) iterator2.next();
-			VisitModel visit = gson.fromJson(json1, VisitModel.class);
-			System.out.println(visit.getDate());
-			VisitModelTable visit2 = new VisitModelTable(visit.getDate(), visit.getPatient().getName(),
+			JsonElement json3 = (JsonElement) iterator2.next();
+			VisitModel visit = gson.fromJson(json3, VisitModel.class);
+            System.out.println(visit.getDate());
+			VisitModelTable visit2 = new VisitModelTable(visit.getVisitID(), visit.getDate(), visit.getPatient().getName(),
 					visit.getPatient().getSurname(), visit.getPurpose().getName(), new ImageView(image));
 			masterData.add(visit2);
 		}
@@ -244,6 +276,25 @@ public class VisitController {
 
 	@FXML
 	void initialize() {
+		Callback<DatePicker, DateCell> dayCellFactory = dp -> new DateCell()
+        {
+            @Override
+            public void updateItem(LocalDate item, boolean empty)
+            {
+                super.updateItem(item, empty);
+
+                if(item.isBefore(LocalDate.now()))
+                {
+                    setStyle("-fx-background-color: #ffc0cb;");
+                    Platform.runLater(() -> setDisable(true));                }
+            }
+        };
+        dateVisit.setDayCellFactory(dayCellFactory);
+
+
+		patientList.getItems().clear();
+		purposeList.getItems().clear();
+		visitTable.getItems().clear();
 		for (int i=0; i<patientCount; i++) {
 		patientList.getItems().add(patientData.get(i).getPatientID()+", "+patientData.get(i).getName()+" "+patientData.get(i).getSurname());
 		}
@@ -254,12 +305,14 @@ public class VisitController {
 		purposeList.setValue(purposeList.getItems().get(0));
 		
 		visitTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		date.setMaxWidth(1f * Integer.MAX_VALUE * 30); // 10% width
+		id.setMaxWidth(1f*Integer.MAX_VALUE * 5);
+		date.setMaxWidth(1f * Integer.MAX_VALUE * 25); // 10% width
 		name.setMaxWidth(1f * Integer.MAX_VALUE * 20); // 10% width
 		surname.setMaxWidth(1f * Integer.MAX_VALUE * 20); // 10% width
 		purpose.setMaxWidth(1f * Integer.MAX_VALUE * 28); // 70% width
 		image.setMaxWidth(1f * Integer.MAX_VALUE * 2);
 		// ***************************************************************
+		id.setCellValueFactory(new PropertyValueFactory<>("id"));
 		date.setCellValueFactory(new PropertyValueFactory<>("date"));
 		name.setCellValueFactory(new PropertyValueFactory<>("name"));
 		surname.setCellValueFactory(new PropertyValueFactory<>("surname"));
@@ -284,7 +337,10 @@ public class VisitController {
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == buttonTypeOne) {
-			// DELETE
+			int id=visitTable.getSelectionModel().getSelectedItem().getId();
+			Request delete=new Request();
+			delete.deleteVisit("/visit/deleteAsDoctorVisitID=", token, id);
+			updateView();
 		} else if (result.get() == buttonTypeTwo) {
 			alert.close();
 		}
@@ -317,6 +373,29 @@ public class VisitController {
 			
 			requesT.addVisit("/visit/addAsDoctor?", token, entry);
 		}
+	}
+
+	public void updateView() {
+		FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxml/VisitLayout.fxml"));
+		AnchorPane pane = null;
+
+		try {
+			pane = loader.load();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		pane.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
+		pane.setPrefSize(1000, 800);
+		//pane.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+
+		VisitController visit=new VisitController();
+		loader.setController(visit);
+
+		VBox bp=(VBox)anchorPane.getParent();
+		bp.setPrefSize(1000,800);
+		bp.getChildren().clear();
+		bp.getChildren().add(pane);
+
 	}
 
 	private int hourParse(Time time){

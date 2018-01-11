@@ -60,11 +60,10 @@ public class LoginController implements ILogin {
 		
 	@FXML
 	void onChangePassword() {
-		/*
-		 * if (password.getText().length() >= 8) { correctPassword = true; } else {
-		 * correctPassword = false; } if (correctEmail && correctPassword) {
-		 * signinButton.setDisable(false); } else { signinButton.setDisable(true); }
-		 */
+		
+		  if (password.getText().length() >= 8) { correctPassword = true; } else {
+		  correctPassword = false; } if (correctEmail && correctPassword) {
+		  signinButton.setDisable(false); } else { signinButton.setDisable(true); }
 		signinButton.setDisable(false);
 	}
 
