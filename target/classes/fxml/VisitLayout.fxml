@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="315.0" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="prs.controllers.VisitController">
+<AnchorPane fx:id="anchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="315.0" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="prs.controllers.VisitController">
   <children>
     <TableView fx:id="visitTable" editable="true" prefHeight="-1.0" prefWidth="-1.0" stylesheets="@../styles/patientTable.css" tableMenuButtonVisible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
       <columns>
@@ -27,7 +27,7 @@
             <DatePicker fx:id="dateVisit" onAction="#populateTimeBox" prefHeight="30.0" prefWidth="174.0" promptText="Choose date" />
             <ComboBox fx:id="time" prefHeight="31.0" prefWidth="100.0" promptText="Time" />
             <TextField fx:id="comment" prefHeight="30.0" prefWidth="272.0" promptText="Comment" />
-            <ComboBox fx:id="purposeList" prefHeight="30.0" prefWidth="175.0" promptText="Purpose" />
+            <ComboBox fx:id="purposeList" onAction="#populateTimeBox" prefHeight="30.0" prefWidth="175.0" promptText="Purpose" />
             <Button mnemonicParsing="false" onAction="#addVisit" style="-fx-background-color: grey; -fx-font-size: 14; -fx-text-fill: white;" stylesheets="@../styles/btn_settings.css" text="Add visit" />
       </children>
     </HBox>
