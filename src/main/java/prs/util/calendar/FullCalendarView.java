@@ -152,7 +152,9 @@ public class FullCalendarView {
 	            x.setMaxHeight(Double.MAX_VALUE);
 	            x.setAlignment(Pos.CENTER);
 	            x.setFont(Font.font ("Verdana",FontWeight.BOLD, 20));
-
+	            ap.setMinSize(0,0);
+                ap.setPrefSize(300,300);
+                ap.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
 	            ap.setBorder(null);
 	            if (isBeforeCurrentMonth) {
 	            	if (calendarDate.getDayOfMonth() > 1) {

@@ -6,6 +6,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -63,6 +64,7 @@ import prs.models.addPurposeModel;
 import prs.util.file.Open;
 import prs.util.parse.MyDateTypeAdapter;
 import prs.util.parse.MySqlDateTypeAdapter;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 
 import static prs.util.calendar.FullCalendarView.getDate;
@@ -71,8 +73,6 @@ public class VisitController {
 	private String token;
 	private int patientCount;
 	private int purposeCount;
-	@FXML
-	private TableView<VisitModelTable> visitTable;
 	@FXML
 	private ComboBox<String> time;
 	private AnchorPane anchorPane;
@@ -107,6 +107,7 @@ public class VisitController {
 	private DatePicker dateVisit;
 	private String visitDate=null;
 	private ConfigurationModel configuration;
+	List<VisitModel> visitList = new ArrayList<>();
 
 	private class DateDeserializer implements JsonDeserializer<Date> {
 		@Override
@@ -220,6 +221,7 @@ public class VisitController {
 					visit.getPatient().getSurname(), visit.getPurpose().getName(), new ImageView(image));
 			masterData.add(visit2);
 		}
+
 		Request request3 = new Request();
 		String response3 = request3.Get("/purpose/doctor?", token);
 		JsonElement json3 = new JsonParser().parse(response3);
@@ -232,6 +234,8 @@ public class VisitController {
 			System.out.println(purpose.getDescription());
 			purposeCount++;
 		}
+
+
 	}
 	public VisitController(String date) {
 		this.visitDate=date;
@@ -270,6 +274,7 @@ public class VisitController {
             System.out.println(visit.getDate());
 			VisitModelTable visit2 = new VisitModelTable(visit.getVisitID(), visit.getDate(), visit.getPatient().getName(),
 					visit.getPatient().getSurname(), visit.getPurpose().getName(), new ImageView(image));
+
 			masterData.add(visit2);
 		}
 	}
@@ -405,12 +410,17 @@ public class VisitController {
 
 	private int minParse(Time time){
 		Long min = time.getTime()/1000/60;
-		while (min > 59)
+		while (min > 59.99999999999999)
 			min-=60;
 		return min.intValue();
 	}
 
-	public void populateTimeBox(){
+	public void populateTimeBox() throws java.text.ParseException {
+		GsonBuilder gSonBuilder = new GsonBuilder();
+		gSonBuilder.registerTypeAdapter(Date.class, new DateDeserializer());
+		gSonBuilder.registerTypeAdapter(Time.class, new TimeDeserializer());
+		gSonBuilder.registerTypeAdapter(Date.class, new MyDateTypeAdapter()).create();
+		Gson gson = gSonBuilder.create();
 		Integer hour;
 		Integer min;
 		Integer interval = 30;
@@ -418,6 +428,33 @@ public class VisitController {
 		String stringTime = null;
 		Time startTime = new Time(0);
 		Time endTime = new Time(0);
+		Time t = new Time(0);
+		Calendar calendar = Calendar.getInstance();
+		Request request = new Request();
+		String idPurp[]=purposeList.getValue().split(",");
+		Request request2 = new Request();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+		String response = request.Get("/visit/thisDoctorDate="+sdf.format(Date.from(dateVisit.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()))+"?", token);
+		JsonElement json = new JsonParser().parse(response);
+		JsonArray array = json.getAsJsonArray();
+		Iterator iterator2 = array.iterator();
+		visitList.clear();
+		while (iterator2.hasNext()) {
+			JsonElement json3 = (JsonElement) iterator2.next();
+			VisitModel visit = gson.fromJson(json3, VisitModel.class);
+			System.out.println("Visits: " + visit.getVisitID());
+			visitList.add(visit);
+		}
+		for (int i = 0; i< purposeData.size(); i++)
+		{
+
+			if (purposeList.getValue().contains(purposeData.get(i).getName())) {
+				t = purposeData.get(i).getDuration();
+				System.out.println("TEST VALUE: "+purposeData.get(i).getDuration() + " By: "+purposeData.get(i).getName());
+			}
+		}
 		if (dateVisit.getValue()!=null){
 			switch (dateVisit.getValue().getDayOfWeek()) {
 				case MONDAY: {
@@ -460,25 +497,69 @@ public class VisitController {
 					startTime.setTime(0);
 				}
 			}
+
 			System.out.println("Time starts: "+hourParse(startTime)+":"+minParse(startTime)+" Time ends: "+hourParse(endTime)+":"+minParse(endTime));
 			for (hour = hourParse(startTime); hour <= hourParse(endTime); hour++) {
+				Calendar endDuration = Calendar.getInstance();
 				for (min = minParse(startTime); min < 60; min += interval) {
 					System.out.println("Hour added: "+hour+":"+min);
-					if (hour == hourParse(endTime) && min >= minParse(endTime))
+
+							if (hour < 10 && min < 10)
+								stringTime = "0" + hour.toString() + ":0" + min.toString();
+							else if (min < 10)
+								stringTime = hour.toString() + ":0" + min.toString();
+							else if (hour < 10)
+								stringTime = "0" + hour.toString() + ":" + min.toString();
+							else
+								stringTime = hour.toString() + ":" + min.toString();
+					long addedDuration = timeFormat.parse(stringTime).getTime()+t.getTime()+3600000;
+					if ((hour == hourParse(endTime) && min >= minParse(endTime))|| addedDuration > endTime.getTime())
 						break;
-						else if (hour < 10 && min < 10)
-							stringTime = "0" + hour.toString() + ":0" + min.toString();
-						else if (min < 10)
-							stringTime = hour.toString() + ":0" + min.toString();
-						else if (hour < 10)
-							stringTime = "0" + hour.toString() + ":" + min.toString();
-						else
-							stringTime = hour.toString() + ":" + min.toString();
-						oTimes.add(stringTime);
+							if (isItVisitTime(stringTime,timeFormat.format(t.getTime())))
+							 	oTimes.add(stringTime);
+							System.out.println(isItVisitTime(stringTime, timeFormat.format(t.getTime())));
+
 				}
 			}
 		}
 		time.setItems(oTimes);
+	}
+
+	private Boolean isItVisitTime(String stringTime, String newVisitDuration) throws java.text.ParseException {
+			boolean returnValue = true;
+		for (int i = 0; i < visitList.size(); i++) {
+			System.out.println(visitList.get(i).getPatient().getName());
+			System.out.println(visitList.get(i).getPurpose().getDescription());
+			PurposeModel purpose = visitList.get(i).getPurpose();
+			System.out.println("Time considered: "+stringTime);
+			SimpleDateFormat stringParser = new SimpleDateFormat("HH:mm");
+			SimpleDateFormat durationParser = new SimpleDateFormat("HH:mm:ss");
+			Calendar checkedTime = Calendar.getInstance();
+			Calendar visitTime = Calendar.getInstance();
+			Calendar durationTime = Calendar.getInstance();
+			Calendar checkedTimeDuration = Calendar.getInstance();
+			checkedTimeDuration.setTime(stringParser.parse(newVisitDuration));
+			visitTime.setTime(stringParser.parse(stringParser.format(visitList.get(i).getDate())));
+			checkedTime.setTime(stringParser.parse(stringTime));
+			long t= visitTime.getTimeInMillis();
+			durationTime.setTime(durationParser.parse(purpose.getDuration().toString()));
+			long t2 = durationTime.getTimeInMillis()+3600000;
+			long t3 = checkedTime.getTimeInMillis();
+			long t4 = checkedTimeDuration.getTimeInMillis()+3600000;
+			Date afterAddingDuration=new Date(t + t2);
+			Date checkedAfterAddingDuration = new Date (t3 + t4);
+			System.out.println("Visit start: "+visitTime.getTime()+" Visit end: "+afterAddingDuration);
+			for (long time = t3; time < t3+t4; time+=300000){
+				Date temp = new Date(time);
+				if (!((stringParser.parse(stringTime).before(visitTime.getTime()) || stringParser.parse(stringTime).after(afterAddingDuration))))
+					{
+						returnValue = false;
+					}
+					else if (!(temp.before(visitTime.getTime())||temp.after(afterAddingDuration)))
+						returnValue = false;
+			}
+		}
+		return returnValue;
 	}
 
 	private void setWorkTime(){
