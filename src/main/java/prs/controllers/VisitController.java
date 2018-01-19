@@ -345,7 +345,9 @@ public class VisitController {
 			int id=visitTable.getSelectionModel().getSelectedItem().getId();
 			Request delete=new Request();
 			delete.deleteVisit("/visit/deleteAsDoctorVisitID=", token, id);
-			updateView();
+
+			visitTable.getItems().remove(i);
+			visitTable.refresh();
 		} else if (result.get() == buttonTypeTwo) {
 			alert.close();
 		}
@@ -375,8 +377,21 @@ public class VisitController {
 					+ "\"patient\": { \"patientID\":"+idPatient+"}, \"purpose\": { \"purposeID\": "+idPurp[0]+"}  }";
 			System.out.println(entry);
 			Request requesT = new Request();
-			
+			Image image = new Image("/images/delete.png");
 			requesT.addVisit("/visit/addAsDoctor?", token, entry);
+			SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+			Request requestx = new Request();
+			String responsex = requestx.Get("/visit/thisDoctorDate="+sdf.format(Date.from(dateVisit.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()))+"?", token);
+			JsonElement jsonx = new JsonParser().parse(responsex);
+			JsonArray array = jsonx.getAsJsonArray();
+			Iterator iterator2 = array.iterator();
+			visitTable.getItems().clear();
+			while (iterator2.hasNext()) {
+				JsonElement json3 = (JsonElement) iterator2.next();
+				VisitModel visit = gson.fromJson(json3, VisitModel.class);
+				System.out.println("Visits: " + visit.getVisitID());
+				visitTable.getItems().add(visitTable.getItems().size(),new VisitModelTable(visit.getVisitID(),visit.getDate(),visit.getPatient().getName(),visit.getPatient().getSurname(), visit.getPurpose().getName(),new ImageView(image)));
+			}
 		}
 	}
 
